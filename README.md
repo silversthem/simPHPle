@@ -25,7 +25,7 @@ Okay, so here goes :
 - Integer numbered versions are stable and functionnal, that are the ones you should use.
 - Versions > 1 with 1 decimal add new features/patch security flaws/corrects bugs, but are still good for building stuff.
 - Versions > 1 with 2 decimals contain experimental features, I'm basically testing stuff that I like (and you'll love it, most of the time).
-- The 0_0_0 folder (not yet existant, in case you didn't notice) contains modules and libraries that you can use. They're probably the best code you'll see in your entire life, so check them out.
+- The 0_0_0 folder (not yet existing, in case you didn't notice) contains modules and libraries that you can use. They're probably the best code you'll see in your entire life, so check them out.
 
 ### Are you my real dad ?
 Wow, that got akward real fast. Maybe, I don't know.
