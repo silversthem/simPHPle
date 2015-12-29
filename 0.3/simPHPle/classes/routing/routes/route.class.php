@@ -11,13 +11,14 @@ class route implements \iroute
   protected $path; // the path to the module's name
   protected $patterns = array(); // the patterns
   protected $first_pattern = false; // the first pattern, if one
-  protected $files = array(); // the files called by default
+  public $constructor; // the route constructor
 
   public function __construct($name,$path) // creates a route
   {
     $this->name = $name;
     $this->path = $path;
     $this->create_object();
+    $this->constructor = new \modules\constructor($name);
   }
   public function set_first_pattern($f) // sets the first pattern
   {
@@ -29,7 +30,6 @@ class route implements \iroute
   }
   public function create_pattern_from_array($a) // creates a pattern from an array
   {
-    $files = (array_key_exists('files',$a)) ? $a['files'] : false;
     $permission = (array_key_exists('permission',$a)) ? $a['permission'] : false;
     $overrides = (array_key_exists('overrides',$a)) ? $a['overrides'] : false;
     if(array_key_exists('pattern',$a))
@@ -38,16 +38,16 @@ class route implements \iroute
       {
         foreach($a['pattern'] as $pattern)
         {
-          $this->create_pattern($pattern,$files,$permission,$overrides);
+          $this->create_pattern($pattern,$a,$permission,$overrides);
         }
       }
       else
       {
-        $this->create_pattern($a['pattern'],$files,$permission,$overrides);
+        $this->create_pattern($a['pattern'],$a,$permission,$overrides);
       }
     }
   }
-  public function create_pattern($pattern,$files = array(),$permission = false,$overrides = false) // creates a pattern
+  public function create_pattern($pattern,$params = array(),$permission = false,$overrides = false) // creates a pattern
   {
     $p = new \routing\pattern();
     if($overrides)
@@ -65,37 +65,13 @@ class route implements \iroute
     {
       $p->add_regex($pattern);
     }
-    if(is_array($files))
-    {
-      foreach($files as $file)
-      {
-        $p->add_files($file);
-      }
-    }
-    else
-    {
-      $p->add_files($files);
-    }
     if($permission != false)
     {
       $p->add_permission($permission);
     }
+    $p->constructor->configure($params);
     $this->patterns[] = &$p;
     return $p;
-  }
-  public function add_files($files) // adds files
-  {
-    if(is_array($files))
-    {
-      foreach($files as $file)
-      {
-        $this->files[] = $file;
-      }
-    }
-    else
-    {
-      $this->files[] = $files;
-    }
   }
   public function name() // returns the modules name
   {
@@ -116,27 +92,15 @@ class route implements \iroute
       $r = $pattern->test_url($url,true);
       if($r['result'])
       {
-        $files = ($r['files'] == false) ? array() : $r['files'];
-        if(!array_key_exists('overrides',$r) || $r['overrides'] != true)
+        if(!array_key_exists('overrides',$r) || $r['overrides'] != true) // no override
         {
-          foreach($this->files as $file)
-          {
-            if(!in_array($file,$files))
-            {
-              $files[] = $file;
-            }
-          }
-          foreach($files as $file)
-          {
-            include $this->path().'/'.$file;
-          }
+          $r['constructor']->set_name($this->name);
+          $r['constructor']->exec();
         }
-        elseif(array_key_exists('overrides',$r) && $r['overrides'] == true)
+        elseif(array_key_exists('overrides',$r) && $r['overrides'] == true) // override
         {
-          foreach($files as $file)
-          {
-            include $this->path().'/'.$file;
-          }
+          $this->constructor->merge($r['constructor']);
+          $this->constructor->exec();
         }
         return $this->name();
       }

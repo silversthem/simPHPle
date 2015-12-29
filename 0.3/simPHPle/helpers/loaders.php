@@ -1,6 +1,41 @@
 <?php
 /* Functions that loads : Interfaces, Traits and Helpers, also autoloads classes */
 
+function path_from_root($path) // the path to a file from the framework's root
+{
+  return '..'.BASE_DIRECTORY.$path;
+}
+
+function include_from_root($path,$once = false) // includes a file from the framework's root
+{
+  $fullpath = path_from_root($path);
+  if(file_exists($fullpath))
+  {
+    if($once)
+    {
+      include_once $fullpath;
+    }
+    else
+    {
+      include $fullpath;
+    }
+  }
+  else
+  {
+    // error handling
+  }
+}
+
+function load_view($v) // loads a view
+{
+  include_from_root(VIEWS_DIRECTORY.'/'.$v,true);
+}
+
+function load_model($m) // loads a model
+{
+  include_from_root(MODELS_DIRECTORY.'/'.$m,true);
+}
+
 function load_interface($interface) // loads an interface
 {
   include_once INTERFACES_DIRECTORY.'/'.$interface.INTERFACE_EXT;
@@ -33,7 +68,7 @@ function autoload_class($class) // autoloads a class
   {
     include_once $name;
   }
-  $userName = CLASS_DIRECTORY.'/user/'.$class.CLASS_EXT;
+  $userName = path_from_root(USER_CLASS_DIRECTORY.$class.CLASS_EXT);
   if(file_exists($userName))
   {
     include_once $userName;
@@ -41,28 +76,11 @@ function autoload_class($class) // autoloads a class
   return false;
 }
 
-function path_from_root($path) // the path to a file from the framework's root
+function load_module_routes($module,$route) // loads the routes defined in a module's dir
 {
-  return '..'.BASE_DIRECTORY.$path;
-}
-
-function include_from_root($path,$once = false) // includes a file from the framework's root
-{
-  $fullpath = path_from_root($path);
-  if(file_exists($fullpath))
+  if(file_exists(MODULES_PATH.'/'.$module.'/'.$route.'.php'))
   {
-    if($once)
-    {
-      include_once $fullpath;
-    }
-    else
-    {
-      include $fullpath;
-    }
-  }
-  else
-  {
-    // error handling
+    include MODULES_PATH.'/'.$module.'/'.$route.'.php';
   }
 }
 

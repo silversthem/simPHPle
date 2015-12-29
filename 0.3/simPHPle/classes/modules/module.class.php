@@ -8,8 +8,10 @@ load_interface('view');
 
 class module
 {
-  protected $links = array(); // the models/views linked
-  protected $models = array(); // the results of models execution
+  public $view; // the view
+  public $model; // the model
+  protected $model_result = NULL; // the result of the model
+  protected $actions = array(); // the method if the view and model are objects
   protected $name; // the directory name
   protected $path; // the path to the module's dir
 
@@ -18,42 +20,66 @@ class module
     $this->name = $name;
     $this->path = $path;
   }
-  public function link($model,$view) // creates a link
+  public function set_couple($model,$view,$actions = array()) // creates a link
   {
-    $this->links[] = array('model' => $model,'view' => $view);
+    $this->model = $model;
+    $this->view = $view;
+    $this->actions = $actions;
   }
-  protected function exec_view($view,$r) // launches a view
+  public function model() // reads the model
   {
-    if($view instanceof \iview)
+    return $this->model_result;
+  }
+  protected function exec_view($view) // launches a view
+  {
+    if($view instanceof \view\view)
     {
-      $view->exec($r);
+      if(array_key_exists('view',$this->actions))
+      {
+        $method = $this->actions['view'];
+        $view->$method();
+      }
+      else
+      {
+        $view->exec();
+      }
     }
     elseif(is_callable($view))
     {
-      $view($r);
+      $view();
+    }
+    elseif(is_string($view))
+    {
+      load_view($view);
     }
   }
   protected function exec_model($model) // launches a model
   {
     if($model instanceof \imodel)
     {
-      return $model->exec();
+      if(array_key_exists('model',$this->actions))
+      {
+        $method = $this->actions['model'];
+        $model->$method();
+      }
+      else
+      {
+        $view->exec();
+      }
     }
     elseif(is_callable($model))
     {
       return $model();
     }
+    elseif(is_string($model))
+    {
+      return load_model($model);
+    }
   }
   public function exec() // executes the module, loading the views, models and so on
   {
-    foreach($this->links as $link)
-    {
-      if(array_key_exists('model',$link) && array_key_exists('view',$link))
-      {
-        $r = $this->exec_model($link['model']);
-        $this->exec_view($link['view'],$r);
-      }
-    }
+    $this->model_result = $this->exec_model($this->model);
+    $this->exec_view($this->view);
   }
 }
 ?>

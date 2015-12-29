@@ -8,45 +8,27 @@ load_interface('pattern');
 class pattern implements \ipattern
 {
   protected $regex = array(); // the regulars expression that'll be used
-  protected $files = array(); // the files that'll be loaded if the regulars expressions matches
+  public $constructor; // the constructor for the module
   protected $permission; // options concerning the regular expressions comparaison
   protected $get_options = array(); // options for the gets
   protected $override_default_files = false; // decides whether the default files have to be loaded
 
   public function __construct() // creates a pattern, and eventually defines the first regex
   {
-
+    $this->constructor = new \modules\constructor();
   }
   public function set_override($v = true) // sets the override
   {
     $this->override_default_files = $v;
   }
-  public function add_files($files) // adds files to be loaded to the pattern
-  {
-    if(is_array($files))
-    {
-      foreach($files as $file)
-      {
-        $this->files[] = $file;
-      }
-    }
-    else
-    {
-      $this->files[] = $files;
-    }
-  }
   public function add_permission($p) // adds a permission to the pattern
   {
     $this->permissions[] = $p;
   }
-  public static function option($files,$permission = false,$pattern = false) // creates an option array easily
+  public static function option($permission = false,$pattern = false) // creates an option array easily
   {
     $o = array();
-    if($files !== false)
-    {
-      $o['files'] = $files;
-    }
-    elseif($permission !== false)
+    if($permission !== false)
     {
       $o['permission'] = $permission;
     }
@@ -58,11 +40,7 @@ class pattern implements \ipattern
   }
   protected function read_option($option,$var = "") // reads an option concerning the $_GET
   {
-    if(array_key_exists('files',$option)) // if there's files to check
-    {
-
-    }
-    elseif(array_key_exists('permission',$option)) // if there's permissions to check
+    if(array_key_exists('permission',$option)) // if there's permissions to check
     {
 
     }
@@ -136,32 +114,12 @@ class pattern implements \ipattern
       {
         if($value['permission'] != false) // if the pattern has permissions
         {
-          // later
-        }
-        if(array_key_exists('files',$value)) // if the pattern has specific files
-        {
-          if(array_key_exists('overrides',$value) && $value['overrides'] == true) // only returns the specific files
+          if(!$value['permission']->check()) // permission not granted
           {
-            return array("files" => $value['files'],"overrides" => $this->override_default_files,'result' => true);
-          }
-          else // merges all the files and returns that
-          {
-            foreach($this->files as $file) // merging the files
-            {
-              if(!in_array($file,$value['files'])) // without including something twice
-              {
-                $value['files'][] = $file;
-              }
-            }
-            return array("files" => $value['files'],"overrides" => $this->override_default_files,'result' => true);
+            return array('result' => false);
           }
         }
-        $files = array();
-        foreach($this->files as $file)
-        {
-          $files[] = $file;
-        }
-        return array("files" => $files,"overrides" => $this->override_default_files,'result' => true);
+        return array('result' => true,'constructor' => $this->constructor);
       }
     }
     return array('result' => false);
