@@ -19,9 +19,9 @@ class launcher
   public function init() // launches the router, loading all the modules to be loaded
   {
     $router_module = $this->router->exec();
-    if(count($router_module) != 0)
+    if(is_string($router_module) && array_key_exists($router_module,$GLOBALS) && $GLOBALS[$router_module] instanceof \modules\module)
     {
-      $this->modules[] = $router_module;
+      $this->modules[] = $GLOBALS[$router_module];
     }
     else
     {

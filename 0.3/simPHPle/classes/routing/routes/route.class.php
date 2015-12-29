@@ -114,9 +114,9 @@ class route implements \iroute
     foreach($this->patterns as $pattern)
     {
       $r = $pattern->test_url($url,true);
-      $files = ($r['files'] == false) ? array() : $r['files'];
       if($r['result'])
       {
+        $files = ($r['files'] == false) ? array() : $r['files'];
         if(!array_key_exists('overrides',$r) || $r['overrides'] != true)
         {
           foreach($this->files as $file)
@@ -138,7 +138,7 @@ class route implements \iroute
             include $this->path().'/'.$file;
           }
         }
-        return $GLOBALS[$this->name()];
+        return $this->name();
       }
     }
     return false;

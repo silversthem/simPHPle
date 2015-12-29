@@ -1,1 +1,4 @@
-<?php echo 'hello world'; ?>
+<?php
+/* The index module */
+global $index;
+?>

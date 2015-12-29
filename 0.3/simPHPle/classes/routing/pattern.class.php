@@ -100,7 +100,7 @@ class pattern implements \ipattern
   {
     $regex = $pattern;
     $varname = array(); // the $_GET var keys
-    if(preg_match_all('#\{(\[?\w+\]?)\}#isU',$url,$matches,PREG_SET_ORDER)) // get the $_GET vars
+    if(preg_match_all('#\{(\[?\w+\]?)\}#isU',$pattern,$matches,PREG_SET_ORDER)) // get the $_GET vars
     {
       foreach($matches as $match)
       {
@@ -164,6 +164,7 @@ class pattern implements \ipattern
         return array("files" => $files,"overrides" => $this->override_default_files,'result' => true);
       }
     }
+    return array('result' => false);
   }
 }
 ?>

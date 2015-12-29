@@ -9,7 +9,6 @@ class router implements \irouter
 {
   protected $routes = array(); // the routes in the router
   protected $url; // the url the router will use
-  protected $options = array(); // options
 
   const MAKE_URL = 1; // tells the router to generate the url from BASE_DIRECTORY
 
@@ -75,7 +74,7 @@ class router implements \irouter
       if($route instanceof \iroute)
       {
         $result = $route->test_url($this->url);
-        if($result instanceof \modules\module) // if the route corresponds
+        if(is_string($result)) // if the route corresponds
         {
           return $result; // tells which files are to be loaded
         }

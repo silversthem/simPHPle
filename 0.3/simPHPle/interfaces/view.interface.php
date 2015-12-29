@@ -3,6 +3,6 @@
 
 interface iview
 {
-
+  public function exec();
 }
 ?>

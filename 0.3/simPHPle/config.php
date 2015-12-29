@@ -9,25 +9,26 @@ define('LOG',true);
 
 define('MODULES_PATH','modules');
 define('TEMPLATES_PATH','assets/templates');
-define('CLASS_DIRECTORY','app/classes');
-define('INTERFACES_DIRECTORY','app/interfaces');
-define('TRAITS_DIRECTORY','app/traits');
-define('HELPERS_DIRECTORY','app/helpers');
-define('LOG_DIRECTORY','datas/log');
+define('CLASS_DIRECTORY','simPHPle/classes');
+define('VIEWS_DIRECTORY','app/views');
+define('MODELS_DIRECTORY','app/models');
+define('INTERFACES_DIRECTORY','simPHPle/interfaces');
+define('TRAITS_DIRECTORY','simPHPle/traits');
+define('HELPERS_DIRECTORY','simPHPle/helpers');
+define('LOG_DIRECTORY','storage/log');
 
 /* Files extensions */
 
 define('CLASS_EXT','.class.php');
 define('INTERFACE_EXT','.interface.php');
 define('TRAIT_EXT','.trait.php');
-define('MODEL_EXT','.model.php');
-define('VIEW_EXT','.view.php');
 
 /* SQL */
 
 define('SQL_LOGIN','root');
 define('SQL_PASSWORD','');
 define('SGBD','mysql');
+define('SQL_HOST','localhost');
 
 /* Development tools */
 

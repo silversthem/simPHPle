@@ -3,6 +3,6 @@
 
 interface imodel
 {
-  
+  public function exec();
 }
 ?>
