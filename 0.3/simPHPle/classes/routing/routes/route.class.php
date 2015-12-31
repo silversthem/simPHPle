@@ -94,13 +94,13 @@ class route implements \iroute
       {
         if(!array_key_exists('overrides',$r) || $r['overrides'] != true) // no override
         {
-          $r['constructor']->set_name($this->name);
-          $r['constructor']->exec();
+          $this->constructor->merge($r['constructor']);
+          $this->constructor->exec();
         }
         elseif(array_key_exists('overrides',$r) && $r['overrides'] == true) // override
         {
-          $this->constructor->merge($r['constructor']);
-          $this->constructor->exec();
+          $r['constructor']->set_name($this->name);
+          $r['constructor']->exec();
         }
         return $this->name();
       }

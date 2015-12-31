@@ -11,7 +11,7 @@ class module
   public $view; // the view
   public $model; // the model
   protected $model_result = NULL; // the result of the model
-  protected $actions = array(); // the method if the view and model are objects
+  protected $actions = array('model' => 'exec','view' => 'exec'); // the method if the view and model are objects
   protected $name; // the directory name
   protected $path; // the path to the module's dir
 
@@ -26,27 +26,134 @@ class module
     $this->view = $view;
     $this->actions = $actions;
   }
-  public function model() // reads the model
+  public function model($specific = false) // reads the model
   {
+    if(is_array($this->model_result) && array_key_exists($specific,$this->model_result))
+    {
+      return $this->model_result[$specific];
+    }
     return $this->model_result;
   }
-  protected function exec_view($view) // launches a view
+  protected function exec_object($object,$action) // executes methods from an object
   {
-    if($view instanceof \view\view)
+    if(is_array($action)) // multiple methods
     {
-      if(array_key_exists('view',$this->actions))
+      $results = array(); // the result of each action will be saved separately
+      foreach($action as $method)
       {
-        $method = $this->actions['view'];
-        $view->$method();
+        $results[$method] = $object->$method();
+      }
+      return $results;
+    }
+    elseif(is_string($action)) // one method
+    {
+      return $object->$action();
+    }
+  }
+  protected function init_array($type,$array) // inits a view/method array
+  {
+    if($type == 'view')
+    {
+      $this->view = array();
+    }
+    elseif($type == 'model')
+    {
+      $this->model = array();
+    }
+    foreach($array as $element)
+    {
+      if(is_array($element))
+      {
+        $this->init_array($type,$element);
+      }
+      elseif($element instanceof \view\view)
+      {
+        $this->view[$this->element->name()] = $element->load();
+      }
+      elseif($element instanceof \model\model)
+      {
+        $this->model[$this->element->name()] = $element->load();
       }
       else
       {
-        $view->exec();
+        if($type == 'view')
+        {
+          $this->view[] = $element;
+        }
+        elseif($type == 'model')
+        {
+          $this->model[] = $element;
+        }
       }
+    }
+  }
+  protected function exec_array($type,$array) // executes a view/method array
+  {
+    if($type == 'view')
+    {
+      foreach($array as $element)
+      {
+        $this->exec_view($element);
+      }
+    }
+    elseif($type == 'model')
+    {
+      $results = array();
+      foreach($array as $element)
+      {
+        if(is_object($element))
+        {
+          $results[get_class($element)] = $this->exec_model($element);
+        }
+        else
+        {
+          $results[] = $this->exec_model($element);
+        }
+      }
+    }
+  }
+  protected function init_view($view) // inits the view, if it's an object
+  {
+    if($view instanceof \view\view)
+    {
+      $this->view = $view->load();
+    }
+    elseif(is_array($view)) // multiple views
+    {
+      $this->init_array('view',$view);
+    }
+  }
+  protected function init_model($model) // inits the model, if it's an object
+  {
+    if($model instanceof \model\model)
+    {
+      $this->model = $model->load();
+    }
+    elseif(is_array($model)) // multiple models
+    {
+      $this->init_array('model',$model);
+    }
+  }
+  protected function exec_view($view) // launches a view
+  {
+    if(is_array($view)) // multiple views
+    {
+      $this->exec_array('view',$view);
     }
     elseif(is_callable($view))
     {
       $view();
+    }
+    elseif(is_object($view))
+    {
+      if(array_key_exists('view',$this->actions)) // reading what method(s) to call
+      {
+        $this->exec_object($view,$this->actions['view']);
+      }
+      else
+      {
+        // error
+      }
     }
     elseif(is_string($view))
     {
@@ -55,21 +162,24 @@ class module
   }
   protected function exec_model($model) // launches a model
   {
-    if($model instanceof \imodel)
+    if(is_array($model))
     {
-      if(array_key_exists('model',$this->actions))
-      {
-        $method = $this->actions['model'];
-        $model->$method();
-      }
-      else
-      {
-        $view->exec();
-      }
+      return $this->exec_array('model',$model);
     }
     elseif(is_callable($model))
     {
       return $model();
+    }
+    elseif(is_object($model))
+    {
+      if(array_key_exists('model',$this->actions))
+      {
+        return $this->exec_object($model,$this->actions['model']);
+      }
+      else
+      {
+        // error
+      }
     }
     elseif(is_string($model))
     {
@@ -78,6 +188,8 @@ class module
   }
   public function exec() // executes the module, loading the views, models and so on
   {
+    $this->init_model($this->model);
+    $this->init_view($this->view);
     $this->model_result = $this->exec_model($this->model);
     $this->exec_view($this->view);
   }

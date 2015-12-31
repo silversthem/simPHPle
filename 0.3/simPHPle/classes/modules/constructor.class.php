@@ -21,25 +21,54 @@ class constructor
   }
   public function get_params() // returns parameters for merging
   {
-    return array('files' => $this->files,'funcs' => $this->funcs,'couple' => $couple,'action' => $action);
+    return array('files' => $this->files,'functions' => $this->funcs,'couple' => $this->couple,'action' => $this->action);
+  }
+  protected function merge_couple($type,$param) // merges the couple
+  {
+    if($this->couple[$type] == NULL) // check if the modele can be merged
+    {
+      $this->merge_action($type,$param);
+      $this->couple[$type] = $param['couple'][$type];
+    }
+    elseif(is_array($this->couple[$type]))
+    {
+      $this->merge_action($type,$param);
+      $this->couple[$type] = $param['couple'][$type];
+    }
+  }
+  protected function merge_action($type,$param) // merges the actions
+  {
+    // ...
   }
   public function merge($c) // merges the two constructors
   {
     $params = $c->get_params();
+    foreach($params['files'] as $file)
+    {
+      if(is_string($file))
+      {
+        $this->add_file($file);
+      }
+    }
+    foreach($params['functions'] as $func)
+    {
+      if(is_callable($func))
+      {
+        $this->add_function($func);
+      }
+    }
+    $this->merge_couple('model',$params);
+    $this->merge_couple('view',$params);
   }
   public function add_file($file) // adds a file
   {
-    if(!in_array($file,$this->files))
-    {
-      $this->files[] = $file;
-    }
+    // ... check if the file isn't already in the array
+    $this->files[] = $file;
   }
   public function add_function($func) // adds a file
   {
-    if(!in_array($func,$this->funcs))
-    {
-      $this->funcs[] = $func;
-    }
+    // ... check if the file isn't already in the array
+    $this->funcs[] = $func;
   }
   public function configure($a) // configures the constructor
   {

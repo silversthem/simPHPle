@@ -27,6 +27,7 @@ define('CLASS_EXT','.class.php');
 define('INTERFACE_EXT','.interface.php');
 define('TRAIT_EXT','.trait.php');
 define('ROUTES_EXT','.php');
+define('TEMPLATES_EXT','.tpl');
 
 /* SQL */
 

@@ -10,14 +10,21 @@ class loader
   protected $class; // the class name
   protected $args = array(); // the arguments for the constructor, eventually
 
-  public function construct($class,$args = array()) // where the class is
+  public function __construct($class,$args = array()) // where the class is
   {
     $this->class = $class;
     $this->classfile = $this->basedir.'/'.str_replace('\\','/',$class).CLASS_EXT; // namespaces handling
     $this->args = $args;
   }
+  public function name() // returns the class name
+  {
+    $classes = explode('\\',$this->class);
+    $class = end($classes);
+    return $class;
+  }
   public function load() // returns the object
   {
+    load_trait('methods');
     if(file_exists($this->classfile))
     {
       include_once $this->classfile;

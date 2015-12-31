@@ -7,6 +7,7 @@ class permission
 {
   protected $type; // the type of test we're doing
   protected $test; // the value, depending on what we're looking for
+  protected $tokens; // the created tokens
 
   public function __construct() // creates a permission
   {
