@@ -27,18 +27,40 @@ class constructor
   {
     if($this->couple[$type] == NULL) // check if the modele can be merged
     {
-      $this->merge_action($type,$param);
       $this->couple[$type] = $param['couple'][$type];
     }
-    elseif(is_array($this->couple[$type]))
+    elseif(is_array($this->couple[$type])) // adding it
     {
-      $this->merge_action($type,$param);
-      $this->couple[$type] = $param['couple'][$type];
+      $this->couple[$type][] = $param['couple'][$type];
     }
   }
-  protected function merge_action($type,$param) // merges the actions
+  protected function merge_action($param,$array = false) // merges the actions
   {
-    // ...
+    if(array_key_exists(0,$param) && $param[0] !== NULL) // if there's something to add for the model
+    {
+      if(is_array($this->action['model'])) // adding
+      {
+        if(is_array($param[0]))
+        {
+          foreach($param[0] as $act)
+          {
+            $this->action['model'][] = $act;
+          }
+        }
+        else
+        {
+          $this->action['model'][] = $param[0];
+        }
+      }
+      else // replacing
+      {
+        $this->action['model'] = $param[0];
+      }
+    }
+    if(array_key_exists(1,$param) && $param[1] !== NULL) // and the view
+    {
+      // ...
+    }
   }
   public function merge($c) // merges the two constructors
   {
@@ -59,16 +81,21 @@ class constructor
     }
     $this->merge_couple('model',$params);
     $this->merge_couple('view',$params);
+    $this->merge_action($params['action'],true);
   }
   public function add_file($file) // adds a file
   {
-    // ... check if the file isn't already in the array
-    $this->files[] = $file;
+    if(!in_array($file,$this->files))
+    {
+      $this->files[] = $file;
+    }
   }
   public function add_function($func) // adds a file
   {
-    // ... check if the file isn't already in the array
-    $this->funcs[] = $func;
+    if(!in_array($func,$this->funcs))
+    {
+      $this->funcs[] = $func;
+    }
   }
   public function configure($a) // configures the constructor
   {

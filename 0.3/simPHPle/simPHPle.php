@@ -7,6 +7,8 @@ include_once 'helpers/loaders.php';
 
 load_helper('dirs');
 
+load_interface('cachable');
+
 $journal = new \handling\log\journal(LOG_DIRECTORY,LOG);
 
 //set_error_handler(function($error,$message,$file,$line,$context){

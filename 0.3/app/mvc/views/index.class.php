@@ -13,11 +13,12 @@ class index
   {
     $this->template = new \view\template('index');
     $this->template->title = 'Best website ever 10/10';
-    $this->template->display = 'hello world !';
     $this->template->style = 'index.css';
   }
   public function exec()
   {
+    $m = $GLOBALS['index']->model('article');
+    $this->template->display = $m['getLastArticles'] . ' This is page number : ' .$m['getPageAmount'];
     echo $this->template->display();
   }
 }

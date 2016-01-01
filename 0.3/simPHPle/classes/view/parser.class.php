@@ -25,10 +25,12 @@ class parser
         return $r;
       }
     }
+    // ...
     return ''; // if there's nothing, we just erase the var
   }
   protected function replace_command($command,$var) // replaces a command
   {
+    // ...
     return ''; // if there's nothing, we just erase the var
   }
   public function parse($content) // parses the content

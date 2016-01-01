@@ -1,5 +1,6 @@
 <?php
 /* The style module */
+
 header('Content-Type: text/css');
 
 if(isset($_GET['modstyle']))

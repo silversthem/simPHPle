@@ -11,14 +11,15 @@ class route implements \iroute
   protected $path; // the path to the module's name
   protected $patterns = array(); // the patterns
   protected $first_pattern = false; // the first pattern, if one
-  public $constructor; // the route constructor
+  public $handler; // the handler for the constructor
 
   public function __construct($name,$path) // creates a route
   {
     $this->name = $name;
     $this->path = $path;
     $this->create_object();
-    $this->constructor = new \modules\constructor($name);
+    $this->handler = new \handling\constructors\handler();
+    $this->handler->default->set_name($name);
   }
   public function set_first_pattern($f) // sets the first pattern
   {
@@ -69,7 +70,7 @@ class route implements \iroute
     {
       $p->add_permission($permission);
     }
-    $p->constructor->configure($params);
+    $p->handler->default->configure($params);
     $this->patterns[] = &$p;
     return $p;
   }
@@ -92,10 +93,11 @@ class route implements \iroute
       $r = $pattern->test_url($url,true);
       if($r['result'])
       {
+        $constructor = $this->handler->exec();
         if(!array_key_exists('overrides',$r) || $r['overrides'] != true) // no override
         {
-          $this->constructor->merge($r['constructor']);
-          $this->constructor->exec();
+          $constructor->merge($r['constructor']);
+          $constructor->exec();
         }
         elseif(array_key_exists('overrides',$r) && $r['overrides'] == true) // override
         {

@@ -8,14 +8,14 @@ load_interface('pattern');
 class pattern implements \ipattern
 {
   protected $regex = array(); // the regulars expression that'll be used
-  public $constructor; // the constructor for the module
   protected $permission; // options concerning the regular expressions comparaison
   protected $get_options = array(); // options for the gets
   protected $override_default_files = false; // decides whether the default files have to be loaded
+  public $handler; // the handler for constructors
 
   public function __construct() // creates a pattern, and eventually defines the first regex
   {
-    $this->constructor = new \modules\constructor();
+    $this->handler = new \handling\constructors\handler();
   }
   public function set_override($v = true) // sets the override
   {
@@ -42,11 +42,11 @@ class pattern implements \ipattern
   {
     if(array_key_exists('permission',$option)) // if there's permissions to check
     {
-
+      // ...
     }
     elseif(array_key_exists('pattern',$option)) // if the $_GET corresponds to a certain pattern
     {
-
+      // ...
     }
     return true;
   }
@@ -119,7 +119,7 @@ class pattern implements \ipattern
             return array('result' => false);
           }
         }
-        return array('result' => true,'constructor' => $this->constructor);
+        return array('result' => true,'constructor' => $this->handler->exec());
       }
     }
     return array('result' => false);

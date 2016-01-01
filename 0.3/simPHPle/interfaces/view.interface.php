@@ -1,5 +1,5 @@
 <?php
-/* Methods all view must have */
+/* Methods all view loaders must have */
 
 interface iview
 {

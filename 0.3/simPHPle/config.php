@@ -15,9 +15,12 @@ define('HELPERS_DIRECTORY','simPHPle/helpers');
 
 /* App directories */
 
-define('VIEWS_DIRECTORY','app/views');
-define('MODELS_DIRECTORY','app/models');
+define('VIEWS_DIRECTORY','app/mvc/views');
+define('MODELS_DIRECTORY','app/mvc/models');
 define('USER_CLASS_DIRECTORY','app/classes');
+define('CONTROLLERS_DIRECTORY','app/mvc/controllers');
+define('FORM_DIRECTORY',CONTROLLERS_DIRECTORY.'/forms');
+define('QUERIES_DIRECTORY',CONTROLLERS_DIRECTORY.'/queries');
 define('TEMPLATES_PATH','app/assets/templates');
 define('MODULES_PATH','app/modules');
 

@@ -1,5 +1,5 @@
 <?php
-/* Methods all models must have */
+/* Methods all model loaders must have */
 
 interface imodel
 {

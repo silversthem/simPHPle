@@ -3,7 +3,7 @@
 
 namespace view;
 
-class template
+class template implements \icachable
 {
     protected $filename; // the template file
     protected $content; // the content of the file
@@ -59,23 +59,24 @@ class template
     }
     protected function parse($content) // parses stuff
     {
-      foreach($this->parsers as $parser)
+      foreach($this->parsers as $parser) // uses all the available parsers
       {
         $parser->set_template($this);
         $content = $parser->parse($content);
       }
       return $content;
     }
-    public function display($cache = false,$cacheFile = '') // displays the template
+    public function gen_cache($f) // creates a cache file
     {
-      if($cache == false)
-      {
-        return $this->parse($this->content);
-      }
-      else
-      {
-        // ...
-      }
+      // ...
+    }
+    public function use_cache($f) // use the cache file instead of generating everything
+    {
+      // ...
+    }
+    public function display() // displays the template
+    {
+      return $this->parse($this->content);
     }
 }
 ?>

@@ -15,7 +15,7 @@ class simPHPle extends \controllers\launcher
     $route = new routing\routes\route($module,MODULES_PATH);
     $datas = func_get_args();
     $routing = $datas[1];
-    $route->constructor->configure($routing); // configuring the constructor with things it can get
+    $route->handler->default->configure($routing); // configuring the constructor with things it can get
     $first_pattern = (array_key_exists('first_pattern',$routing)) ? $routing['first_pattern'] : false;
     if($first_pattern !== false)
     {

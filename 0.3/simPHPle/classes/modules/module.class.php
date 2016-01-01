@@ -10,7 +10,7 @@ class module
 {
   public $view; // the view
   public $model; // the model
-  protected $model_result = NULL; // the result of the model
+  protected $model_result = array(); // the result of the model
   protected $actions = array('model' => 'exec','view' => 'exec'); // the method if the view and model are objects
   protected $name; // the directory name
   protected $path; // the path to the module's dir
@@ -26,13 +26,13 @@ class module
     $this->view = $view;
     $this->actions = $actions;
   }
-  public function model($specific = false) // reads the model
+  public function model($specific) // reads the model
   {
-    if(is_array($this->model_result) && array_key_exists($specific,$this->model_result))
+    if(array_key_exists($specific,$this->model_result))
     {
       return $this->model_result[$specific];
     }
-    return $this->model_result;
+    return false;
   }
   protected function exec_object($object,$action) // executes methods from an object
   {
@@ -41,7 +41,10 @@ class module
       $results = array(); // the result of each action will be saved separately
       foreach($action as $method)
       {
-        $results[$method] = $object->$method();
+        if(is_string($method))
+        {
+          $results[$method] = $object->$method();
+        }
       }
       return $results;
     }
@@ -110,6 +113,7 @@ class module
           $results[] = $this->exec_model($element);
         }
       }
+      return $results;
     }
   }
   protected function init_view($view) // inits the view, if it's an object
@@ -168,13 +172,13 @@ class module
     }
     elseif(is_callable($model))
     {
-      return $model();
+      return array('function' => $model());
     }
     elseif(is_object($model))
     {
       if(array_key_exists('model',$this->actions))
       {
-        return $this->exec_object($model,$this->actions['model']);
+        return array(get_class($model) => $this->exec_object($model,$this->actions['model']));
       }
       else
       {
@@ -183,7 +187,7 @@ class module
     }
     elseif(is_string($model))
     {
-      return load_model($model);
+      return array($model => load_model($model));
     }
   }
   public function exec() // executes the module, loading the views, models and so on
