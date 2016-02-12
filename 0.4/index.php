@@ -6,12 +6,16 @@
 
 include 'simPHPle/simPHPle.php';
 
-// @TODO - handles normal php get : ?id=1&page=3 etc... because right now it does weird stuff
-// @TODO - Handles routing errors : wrong arguments/permissions etc...
-// @TODO - Include constrollers, form, queries, permissions in route
-// @TODO - Implement everything in the app folder
+// @TODO - Add dependy methods in routes and app etc... for more easily manageable inclusions
+// @TODO - change file names to ALL lowercases, easier to maintain (then change Get and Post class names to GET and POST, easier to read)
+// @TODO - Rewrites controllers and modules, and the way the latter handle model and view
+// @TODO - Support [permmissions, errors, queries, form] IN controllers and separate (as other objects) in modules
+// @TODO - handles normal php options : ?id=1&page=3 etc...
+// @TODO - Error handling
+// @TODO - Find a way to implement libraries
 /* @TODO - In core :
 	- Template
+		- Parsers : html, file inclusions etc...
 	- Databases (ORM)
-	- Forms, Queries */
+*/
 ?>

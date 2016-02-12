@@ -17,6 +17,18 @@ class Controller implements \ILauncher
 		$this->model = $model;
 		$this->view = $view;
 	}
+	public function set_couple($model,$view) // sets model/view couple
+	{
+
+	}
+	public function set_model($model) // sets model
+	{
+
+	}
+	public function set_view($view) // sets view
+	{
+
+	}
 	protected function exec_model($model) // executes the model
 	{
 		return \Launcher::boot($model);

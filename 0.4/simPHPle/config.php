@@ -22,23 +22,23 @@ define('HELPERS_DIRECTORY','simPHPle/helpers');
 
 /* App directories */
 
-define('VIEWS_DIRECTORY','app/mvc/views');
-define('MODELS_DIRECTORY','app/mvc/models');
-define('USER_CLASS_DIRECTORY','app/classes');
-define('CONTROLLERS_DIRECTORY','app/mvc/controllers');
-define('FORM_DIRECTORY',CONTROLLERS_DIRECTORY.'/forms');
-define('QUERIES_DIRECTORY',CONTROLLERS_DIRECTORY.'/queries');
-define('TEMPLATES_PATH','app/assets/templates');
 define('MODULES_PATH','app/modules');
+define('USER_CLASS_DIRECTORY','app/core');
+// forms
+// queries
+define('TEMPLATES_PATH','app/assets/templates');
 
 /* Files extensions */
 
+define('CONTROLLER_EXT','.controller.php');
+define('EVENT_EXT','.event.php');
+define('ROUTES_EXT','.php');
+define('TEMPLATES_EXT','.tpl');
+// system : don't change /!\
 define('CLASS_EXT','.class.php');
 define('INTERFACE_EXT','.interface.php');
 define('TRAIT_EXT','.trait.php');
 define('HELPER_EXT','.php');
-define('ROUTES_EXT','.php');
-define('TEMPLATES_EXT','.tpl');
 
 /* SQL */
 

@@ -17,6 +17,10 @@ class Object implements \ILoader
 		$this->className = $className;
 		$this->classFile = $classFile;
 	}
+	public function name() // get class name
+	{
+		return $this->className;
+	}
 	public function set_class_file($dir,$ext = CLASS_EXT) // createes a class file from a directory, the class name and an extension
 	{
 		$this->classFile = $dir.'/'.strtolower($this->className).$ext;

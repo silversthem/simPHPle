@@ -6,6 +6,9 @@
 
 trait Options
 {
+	static $_INCREMENT = -1; // const for arrays
+	static $_START = -2;
+
 	protected $options = array(); // options
 
 	public function create_options($options) // sets up options
@@ -36,6 +39,24 @@ trait Options
 	public function set_option($option,$value) // sets an option
 	{
 		$this->options[$option] = $value;
+	}
+	public function set_option_pile($pile,$value,$key = self::_INCREMENT) // sets an option element in array
+	{
+		if($this->option_exists($pile) && is_array($this->options[$pile]))
+		{
+			if($key == self::$INCREMENT)
+			{
+				$this->options[$pile][] = $value;
+			}
+			elseif($key == self::$START)
+			{
+				array_unshift($this->options[$pile],$value);
+			}
+			else
+			{
+				$this->options[$pile][$key] = $value;
+			}
+		}
 	}
 	public function get_option($option) // gets an option, if existing
 	{

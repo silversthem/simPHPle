@@ -9,6 +9,7 @@
 class_alias('\handlers\Handler','Handler');
 class_alias('\handlers\Journal','Journal');
 class_alias('\handlers\files\File','File');
+class_alias('\handlers\files\Json','Json');
 class_alias('\handlers\events\Query','Query');
 class_alias('\handlers\events\Form','Form');
 
