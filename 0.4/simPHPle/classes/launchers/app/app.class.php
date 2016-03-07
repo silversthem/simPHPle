@@ -1,7 +1,7 @@
 <?php
 /*
 *	simPHPle 0.4 app.class.php : Class
-*	Handles module based apps
+*	Handles controller and modules based apps
 */
 
 namespace launchers\app;
@@ -18,6 +18,16 @@ class App extends \Launcher implements \ILauncher
 	public function set_handler($handler) // sets the app handler
 	{
 		$this->handler = $handler;
+	}
+	public static function dependencies() // app dependencies
+	{
+		\Loader::load('actions/controller','helper');
+		\Loader::load('actions/module','helper');
+		\Loader::load('actions/testers','helper');
+		\Loader::load('app/controller','interface');
+		\Loader::load('app/event','interface');
+		\Loader::load('app/model','interface');
+		\Loader::load('app/view','interface');
 	}
 	public static function set_error_status($status,$exec) // sets an executor when hitting an error
 	{

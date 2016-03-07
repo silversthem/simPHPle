@@ -12,6 +12,8 @@ class_alias('\handlers\files\File','File');
 class_alias('\handlers\files\Json','Json');
 class_alias('\handlers\events\Query','Query');
 class_alias('\handlers\events\Form','Form');
+class_alias('\handlers\requests\GET','GET');
+class_alias('\handlers\requests\POST','POST');
 
 /* Router */
 
@@ -29,9 +31,13 @@ class_alias('\launchers\app\SimPHPle','SimPHPle');
 class_alias('\launchers\Controller','Controller');
 class_alias('\launchers\Module','Module');
 class_alias('\launchers\executors\Collection','Collection');
+class_alias('\launchers\executors\Executor','Executor');
+class_alias('\launchers\executors\Object','Executors\Object');
 
 /* Databases */
 
 /* Views */
+
+class_alias('\views\Template','Template');
 
 ?>

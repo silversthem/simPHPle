@@ -6,9 +6,10 @@
 
 namespace app;
 
-interface Event extends \IHandler
+interface IEvent extends \IHandler
 {
   public function init();
   public function valid();
+  public function error($status);
 }
 ?>

@@ -6,7 +6,7 @@
 
 namespace app;
 
-interface IController extends \ILauncher
+interface IController
 {
   public function init();
   public function error($status);

@@ -8,6 +8,7 @@
 /* GENERAL SETTINGS */
 
 define('BASE_DIRECTORY','/0.4/'); // the directory containing the framework
+define('ROOT_DIRECTORY','/var/www/htdocs/0.4'); // path to said directory, from root
 define('MODE','DEVELOPMENT'); // what we're doing : PRODUCTION/DEVELOPMENT/MAINTENANCE
 define('LOG',true);
 define('LOG_DIRECTORY','storage/log');
@@ -51,5 +52,4 @@ define('SQL_HOST','localhost');
 
 define('DEVTOOLS_ENABLED',true);
 define('DEVTOOLS_ROUTES_ENABLED',true);
-
 ?>

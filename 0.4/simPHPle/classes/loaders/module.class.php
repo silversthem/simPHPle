@@ -4,7 +4,7 @@
 *	Creates a module
 */
 
-namespace loaders\routing;
+namespace loaders;
 
 class Module implements \ILoader
 {

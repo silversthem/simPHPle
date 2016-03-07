@@ -20,7 +20,7 @@ class Ticket implements \app\IController
   }
   protected function form() // returns associated event form
   {
-
+    
   }
   public function onAdd() // when adding form is filled
   {

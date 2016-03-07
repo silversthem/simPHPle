@@ -2,6 +2,7 @@
 /*
 *	simPHPle 0.4 module.class.php : Class
 *	A module, containing a view and model
+* Modules are special types of controllers
 */
 
 namespace launchers;

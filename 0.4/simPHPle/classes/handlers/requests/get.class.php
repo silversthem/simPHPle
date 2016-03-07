@@ -6,7 +6,7 @@
 
 namespace handlers\requests;
 
-class Get
+class GET
 {
   // ...
 }

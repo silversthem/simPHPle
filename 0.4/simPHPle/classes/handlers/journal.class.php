@@ -25,6 +25,11 @@ class Journal
 		self::$mode = $mode;
 		self::$dir = $dir;
 	}
+	public static function dependencies() // loads journal dependencies
+	{
+		\Loader::load('walker','helper');
+		\Loader::load('dirs','helper');
+	}
 	public static function write($message) // writes a message in the log
 	{
 		$file = self::get_filename();

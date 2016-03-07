@@ -58,6 +58,10 @@ class Launcher implements \ILauncher
 		{
 			return $object->exec();
 		}
+		elseif(is_callable($object)) // callable or __invoke method
+		{
+			return $object();
+		}
 		else // returning what we got
 		{
 			return $object;

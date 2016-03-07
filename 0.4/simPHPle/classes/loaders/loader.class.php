@@ -8,11 +8,12 @@ namespace loaders;
 
 class Loader
 {
-	static $DIRS =
+	static $DIRS = // Dirs for loading things
 		array('CLASS' => CLASS_DIRECTORY,'TRAITS' => TRAITS_DIRECTORY,'INTERFACES' => INTERFACES_DIRECTORY,'HELPER' => HELPERS_DIRECTORY,
 					'USER_CLASS' => USER_CLASS_DIRECTORY);
-	static $EXT  =
+	static $EXT  = // File extensions
 		array('CLASS' => CLASS_EXT      ,'TRAITS' => TRAIT_EXT       ,'INTERFACES' => INTERFACE_EXT       ,'HELPER' => HELPER_EXT);
+	static $LOADED = array('classes' => array(),'traits' => array(),'interfaces' => array(),'helpers' => array(),'libraries' => array()); // things loaded
 
 	public static function Including($file) // includes a file
 	{
@@ -34,7 +35,8 @@ class Loader
 	}
 	public static function autoload($class) // autoloads a class
 	{
-		$name = '/'.implode('/',array_map('lcfirst',explode('\\',$class))).self::$EXT['CLASS'];
+		$name = '/'.str_replace('\\','/',strtolower($class)).self::$EXT['CLASS'];
+		self::$LOADED['classes'][] = $class;
 		if(!self::Including_once(self::$DIRS['CLASS'].$name))
 		{
 			if(!self::Including_once(self::$DIRS['USER_CLASS'].$name))
@@ -45,9 +47,10 @@ class Loader
 	}
 	public static function load_class($class,$otherDir = NULL) // loads a class
 	{
+		self::$LOADED['classes'][] = $class;
 		if(!is_null($otherDir))
 		{
-			return self::Including_once($otherDir.'/'.$class.self::$EXT['CLASS']);
+			return self::Including_once($otherDir.'/'.strtolower($class).self::$EXT['CLASS']);
 		}
 		else
 		{
@@ -56,39 +59,64 @@ class Loader
 	}
 	public static function load_trait($trait,$otherDir = NULL) // loads a trait
 	{
+		self::$LOADED['traits'][] = $trait;
 		if(!is_null($otherDir))
 		{
-			return self::Including_once($otherDir.'/'.$trait.self::$EXT['TRAITS']);
+			return self::Including_once($otherDir.'/'.strtolower($trait).self::$EXT['TRAITS']);
 		}
 		else
 		{
-			return self::Including_once(self::$DIRS['TRAITS'].'/'.$trait.self::$EXT['TRAITS']);
+			return self::Including_once(self::$DIRS['TRAITS'].'/'.strtolower($trait).self::$EXT['TRAITS']);
 		}
 	}
 	public static function load_interface($interface,$otherDir = NULL) // loads a interface
 	{
+		self::$LOADED['interfaces'][] = $interface;
 		if(!is_null($otherDir))
 		{
-			return self::Including_once($otherDir.'/'.$interface.self::$EXT['INTERFACES']);
+			return self::Including_once($otherDir.'/'.strtolower($interface).self::$EXT['INTERFACES']);
 		}
 		else
 		{
-			return self::Including_once(self::$DIRS['INTERFACES'].'/'.$interface.self::$EXT['INTERFACES']);
+			return self::Including_once(self::$DIRS['INTERFACES'].'/'.strtolower($interface).self::$EXT['INTERFACES']);
 		}
 	}
 	public static function load_helper($helper,$otherDir = NULL) // loads a helper
 	{
+		self::$LOADED['helpers'][] = $helper;
 		if(!is_null($otherDir))
 		{
-			return self::Including_once($otherDir.'/'.$helper.self::$EXT['HELPER']);
+			return self::Including_once($otherDir.'/'.strtolower($helper).self::$EXT['HELPER']);
 		}
 		else
 		{
-			return self::Including_once(self::$DIRS['HELPER'].'/'.$helper.self::$EXT['HELPER']);
+			return self::Including_once(self::$DIRS['HELPER'].'/'.strtolower($helper).self::$EXT['HELPER']);
+		}
+	}
+	public static function load($file,$type)
+	{
+		switch($type)
+		{
+			case 'class':
+				self::load_class($file);
+			break;
+			case 'trait':
+				self::load_trait($file);
+			break;
+			case 'interface':
+				self::load_interface($file);
+			break;
+			case 'helper':
+				self::load_helper($file);
+			break;
+			case 'library':
+				self::load_library($file);
+			break;
 		}
 	}
 	public static function load_library($lib,$otherDir = NULL) // loads a library
 	{
+		self::$LOADED['libraries'][] = $lib;
 		// ...
 	}
 }

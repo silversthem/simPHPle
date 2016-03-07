@@ -14,9 +14,13 @@ class Form implements \IEvent
   {
 
   }
+  public function error($status)
+  {
+
+  }
   public function get()
   {
-    
+
   }
 }
 ?>

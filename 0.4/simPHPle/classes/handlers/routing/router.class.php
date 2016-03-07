@@ -24,6 +24,11 @@ class Router implements \IHandler
 			$this->url = $url;
 		}
 	}
+	public function dependencies() // loads router dependencies
+	{
+		\Loader::load('creators/controller','trait');
+		\Loader::load('creators/module','trait');
+	}
 	public static function get_url() // returns the url, deleting BASE_DIRECTORY from the server url
 	{
 		return str_replace(BASE_DIRECTORY,'',$_SERVER['REQUEST_URI']);

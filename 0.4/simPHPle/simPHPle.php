@@ -21,8 +21,14 @@ Loader::load_trait('result');
 Loader::load_trait('options');
 
 Loader::load_helper('aliases');
-Loader::load_helper('walker');
-Loader::load_helper('dirs');
+
+Journal::dependencies();
+
+App::dependencies();
+
+Router::dependencies();
+
+Template::dependencies();
 
 $journal = new Journal(MODE,LOG_DIRECTORY);
 

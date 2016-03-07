@@ -45,7 +45,7 @@ class Object implements \ILauncher
     {
       return $this->object->name();
     }
-    elseif(method_exists($this->object,'name')
+    elseif(method_exists($this->object,'name'))
     {
       return $this->object->name();
     }
