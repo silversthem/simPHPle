@@ -2,7 +2,7 @@
 /*
   Trait
   This traits contains all the methods of the array interfaces :
-
+  ArrayAccess and Iterator
   Just link your class array in the set_up method
 */
 
@@ -14,6 +14,10 @@ trait ArrayAccessor
   public function set_up_array(array &$array,$modifiable = true) // sets up the accessor
   {
     $this->var_array = &$array;
+    $this->array_modifiable = $modifiable;
+  }
+  public function array_modifiable($modifiable) // sets if array is modifiable
+  {
     $this->array_modifiable = $modifiable;
   }
   public function is_modifiable($errorContext = NULL) // checks if the array is modifiable, and throws an exception if errorContext isn't NULL

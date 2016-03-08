@@ -18,6 +18,7 @@ spl_autoload_register(array('loaders\Loader','autoload'));
 
 loaders\Loader::load_trait('Referencial');
 loaders\Loader::load_trait('ArrayAccessor');
+loaders\Loader::load_trait('Collection');
 
 /* Interface used by classes having aliases */
 

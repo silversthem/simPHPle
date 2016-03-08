@@ -13,7 +13,7 @@ class File
   use \Referencial; // makes the class great again
 
   /* Methods */
-  
+  // @TODO Non static class use : optimisation
   /* Static methods */
   public static function read($filename) // opens a file
   {
