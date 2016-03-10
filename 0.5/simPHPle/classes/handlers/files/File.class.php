@@ -1,6 +1,6 @@
 <?php
 /*
-  Static Class
+  Class
   Handles files
 */
 
@@ -8,12 +8,58 @@ namespace handlers\files;
 
 class File
 {
+  protected $filename; // file name
+  protected $file; // the file ressource
+  protected $method; // method the file is opened in
+
   const END_FILE = -1; // custom cursor position in file : end file
 
   use \Referencial; // makes the class great again
 
   /* Methods */
-  // @TODO Non static class use : optimisation
+  public function __construct($filename = NULL,$method = 'c+') // creates a new file object
+  {
+    $this->filename = $filename;
+    $this->method = 'c+';
+    if(!is_null($filename))
+    {
+      $this->ref_open($filename,$method);
+    }
+  }
+  protected function apply_file_function($func,$args) // applies a function to the file ressource
+  {
+    if(is_callable($func))
+    {
+      return call_user_func_array($func,array_merge($this->file,$args));
+    }
+    else
+    {
+      throw new \fException('File',\fException::ERROR,'Tried to call non file function in File class',array('function' => $func,'filename' => $this->filename));
+    }
+  }
+  /* Referencial methods */
+  protected function ref_open($filename,$method = 'c+') // opens a file
+  {
+    if(!($this->file = @fopen($filename,$method))) // trying to open the file
+    {
+      throw new \fException('File',\fException::ERROR,'Tried to open file, but failed',$filename);
+    }
+  }
+  protected function ref_close() // closes the file
+  {
+    if(!fclose($this->file))
+    {
+      throw new \fException('File',\fException::ERROR,'Tried to open file, but failed',$filename);
+    }
+  }
+  public function ref_read() // reads the file
+  {
+
+  }
+  public function ref_write() // writes in the file
+  {
+
+  }
   /* Static methods */
   public static function read($filename) // opens a file
   {

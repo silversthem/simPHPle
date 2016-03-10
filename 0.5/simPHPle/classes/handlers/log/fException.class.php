@@ -13,19 +13,21 @@ class fException extends \Exception
   protected $error; // Error
   protected $context; // Context of error
   protected $timeline; // when the exception was created
+  protected $object; // object associated with the error
 
   const FATAL = 'Fatal error'; // Very important error, you know what you've done and guess what, we know too
   const ERROR = 'Error'; // Unexpeced behavior, see context to know how it was handled
   const WARNING = 'Warning'; // Weird behavior, see context to know how it was handled
   const NOTICE = 'Notice'; // Bad/Depreciated practice, still works but could be cleaner, see context
 
-  public function __construct($component,$type,$error,$context = NULL) // creates a new framework exception
+  public function __construct($component,$type,$error,$context = NULL,$object = NULL) // creates a new framework exception
   {
     parent::__construct('Framework error');
     $this->type = $type;
     $this->component = $component;
     $this->error = $error;
     $this->context = $context;
+    $this->object = $object;
     $this->timeline = Journal::timeline();
   }
   final public function  __get($attribute) // all attributes of all exception are readable, always. It's important, very important

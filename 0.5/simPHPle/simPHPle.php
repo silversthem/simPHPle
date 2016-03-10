@@ -16,6 +16,7 @@ spl_autoload_register(array('loaders\Loader','autoload'));
 
 /* Traits used by classes */
 
+loaders\Loader::load_trait('ComponentException');
 loaders\Loader::load_trait('Referencial');
 loaders\Loader::load_trait('ArrayAccessor');
 loaders\Loader::load_trait('Collection');

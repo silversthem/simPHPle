@@ -115,22 +115,75 @@ trait Collection
     }
     else
     {
-      $this->exception($key,'Trying to get non existant key in pile',array('pile_key' => $key,'pile' => $pile));
+      $this->exception($key,'Trying to get non existant key in pile',array('pile' => $pile));
     }
   }
   /* Deleting */
   public function delete($key) // deletes a key
   {
-
+    if($this->writable($key,true,'Tried to delete a key, but failed')) // adding = deleting permission
+    {
+      unset($this->collection[$key]);
+    }
   }
   public function delete_from_pile($pile,$key) // deletes a key from a pile
   {
-    
+    if($this->writable($pile,true,'Tried to access a pile for deletion, but failed',array('pile' => $pile,'key' => $key))) // if we can delete in pile
+    {
+      if(is_array($this->collection[$pile]) && array_key_exists($key,$this->collection[$pile]))
+      {
+        unset($this->collection[$pile][$pile]);
+      }
+      else
+      {
+        $this->exception($key,'Trying to delete non existant key in pile',array('pile' => $pile));
+      }
+    }
   }
   /* Operations */
   public function merge($collection,$replace = true,$add = true) // merges two collections together
   {
-
+    foreach($collection as $key => $value)
+    {
+      if(is_array($value)) // value is a pile
+      {
+        if($this->exists($key) && is_array($this->collection[$key])) // collection with same key is also a pile
+        {
+          if($add && $replace) // merging elements
+          {
+            $this->collection[$key] = array_merge_recursive($this->collection[$key],$value);
+          }
+          elseif($add) // just adding
+          {
+            $diffKeys = array_diff_key($this->collection[$key],$value);
+            foreach($diffKeys as $k => $v)
+            {
+              $this->collection[$k] = $v;
+            }
+          }
+          elseif($replace) // just replacing
+          {
+            $this->collection[$key] = array_replace_recursive($this->collection[$key],$value);
+          }
+          continue;
+        }
+      }
+      if($replace) // we can replace
+      {
+        if($add) // we can add
+        {
+          $this->collection[$key] = $value;
+        }
+        elseif($this->exists($key)) // we can't add -> element has to exist
+        {
+          $this->collection[$key] = $value;
+        }
+      }
+      elseif(!$this->exists($key) && $add) // we can only add
+      {
+        $this->collection[$key] = $value;
+      }
+    }
   }
   public function exists($key) // if keys exists
   {
@@ -158,11 +211,11 @@ trait Collection
   /* Magic method */
   public function __get($key) // alias of get
   {
-
+    return $this->get($key);
   }
   public function __set($key,$value) // alias of set and add
   {
-
+    return $this->set($key,$value);
   }
 }
 ?>
