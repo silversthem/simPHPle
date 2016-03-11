@@ -202,7 +202,7 @@ trait Collection
     $context = array_merge(array(
       'class' => __CLASS__,'modifiable' => $this->modifiable,'addable' => $this->addable,'key' => $key,'key_exists' => $this->exists($key)),
     $err_context);
-    throw new \fException('Collection Trait',$err,$err_context,$err_type);
+    throw new \fException('Collection Trait',$err_type,$err,$err_context,$this);
   }
   public function writable($key,$adding,$err,$err_context,$err_type = \fException::ERROR) // checks if key is writable, and if not, throws exception
   {

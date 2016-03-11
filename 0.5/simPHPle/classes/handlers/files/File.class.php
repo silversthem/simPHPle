@@ -12,56 +12,119 @@ class File
   protected $file; // the file ressource
   protected $method; // method the file is opened in
 
-  const END_FILE = -1; // custom cursor position in file : end file
-
   use \Referencial; // makes the class great again
+  use \ComponentException; // Handles object exception
 
   /* Methods */
   public function __construct($filename = NULL,$method = 'c+') // creates a new file object
   {
+    $this->exception_set_up('File');
     $this->filename = $filename;
-    $this->method = 'c+';
+    $this->method = $method;
     if(!is_null($filename))
     {
       $this->ref_open($filename,$method);
+    }
+  }
+  protected function ref_delete() // deletes filename
+  {
+    try
+    {
+      $this->ref_close();
+    }
+    finally
+    {
+      if(!unlink($this->filename))
+      {
+        $this->exception('Can\'t delete file',$file);
+      }
     }
   }
   protected function apply_file_function($func,$args) // applies a function to the file ressource
   {
     if(is_callable($func))
     {
-      return call_user_func_array($func,array_merge($this->file,$args));
+      return call_user_func_array($func,array_merge(array($this->file),$args));
     }
     else
     {
-      throw new \fException('File',\fException::ERROR,'Tried to call non file function in File class',array('function' => $func,'filename' => $this->filename));
+      $this->exception('Tried to call non file function in File class',array('function' => $func,'filename' => $this->filename));
     }
+  }
+  public function __call($method,$args) // when calling a non-existant method, either use referencial or try a f_method
+  {
+    try
+    {
+      $result = $this->referencial_call('ref_'.$method,$args); // trying referencial
+    }
+    catch(\fException $e) // can't, so trying f_method
+    {
+        $result = $this->apply_file_function('f'.$method,$args);
+    }
+    return $result;
+  }
+  public function read() // reads the file
+  {
+    $r = fread($this->file,filesize($this->file));
+    if($r === false)
+    {
+      $this->exception('Couldn\'t read file',$this->filename);
+    }
+    return $r;
   }
   /* Referencial methods */
   protected function ref_open($filename,$method = 'c+') // opens a file
   {
     if(!($this->file = @fopen($filename,$method))) // trying to open the file
     {
-      throw new \fException('File',\fException::ERROR,'Tried to open file, but failed',$filename);
+      if(!file_exists($filename))
+      {
+        $this->exception('Tried to open file, but failed',$this->filename);
+      }
     }
   }
   protected function ref_close() // closes the file
   {
     if(!fclose($this->file))
     {
-      throw new \fException('File',\fException::ERROR,'Tried to open file, but failed',$filename);
+      $this->exception('Tried to open file, but failed',$this->filename);
     }
   }
-  public function ref_read() // reads the file
+  protected function ref_write($content) // writes in the file from cursor
   {
-
+    if(fwrite($this->file,$context) === false) // trying to write
+    {
+      $this->exception('Tried to write in file, but failed',$this->filename);
+    }
   }
-  public function ref_write() // writes in the file
+  protected function ref_seek($position,$whence = SEEK_SET) // puts elsewhere the internal file cursor
   {
-
+    if(fseek($this->file,$position,$whence) == -1) // if it failed
+    {
+      $this->exception('Tried to seek cursor in file, but failed',$this->filename);
+    }
+  }
+  protected function ref_prepend($content) // Tries to write at the beginning of the file
+  {
+    $tempfile = tempnam(dirname($this->filename),'');
+    if(!@file_put_contents($tempfile,$content)) // trying to write in the temp file
+    {
+      $this->exception('Tried to write in temp file for prepend, but failed',$this->filename);
+    }
+    $this->ref_seek(0,SEEK_SET);
+    file_put_contents($tempfile,$this->file,FILE_APPEND);
+    chmod($tempfile,fileperms($this->filename));
+    $this->ref_delete();
+    rename($tempfile,$this->filename);
+    $this->ref_open($this->filename,$this->method);
+  }
+  protected function ref_append($content) // Tries to write at the end of file
+  {
+    $this->ref_seek(0,SEEK_END);
+    $this->ref_write($content);
   }
   /* Static methods */
-  public static function read($filename) // opens a file
+  public static function ref_static_read($filename) // opens a file
   {
     if(!file_exists($filename) || !is_readable($filename)) // can't open file
     {
@@ -69,7 +132,7 @@ class File
     }
     return file_get_contents($filename);
   }
-  public static function write($filename,$content,$mode,$cursor_position = 0) // writes in a file using classic c type options
+  public static function ref_static_write($filename,$content,$mode,$cursor_position = 0) // writes in a file using classic c type options
   {
     if($handler = @fopen($filename,$mode))
     {
@@ -85,45 +148,21 @@ class File
   {
     self::write($filename,$content,'w');
   }
-  public static function delete($filename) // deletes a file
+  public static function ref_static_delete($filename) // deletes a file
   {
     if(!@unlink($filename)) // error while deleting
     {
       throw new \fException('File',\fException::ERROR,'Unable to delete file',$filename);
     }
   }
-  public static function append($filename,$content) // adds content at file's end
+  public static function ref_static_append($filename,$content) // adds content at file's end
   {
     self::write($filename,$content,'a');
   }
-  public static function prepend($filename,$content) // adds content at file's beginning, without erasing previous content
+  public static function ref_static_prepend($filename,$content) // adds content at file's beginning, without erasing previous content
   {
-    $context = stream_context_create();
-    if($handler = @fopen($filename,'r',1,$context)) // creating a pointer to file we want to prepend
-    {
-      $tmp = tempnam(dirname($filename),''); // creating a temporary file
-      if(@file_put_contents($tmp,$content)) // adding new content
-      {
-        file_put_contents($tmp,$handler,FILE_APPEND); // appending stream
-        fclose($handler); // closing stream
-        $perms = fileperms($filename); // conserving permissions
-        self::delete($filename);
-        rename($tmp,$filename); // replacing with new one
-        chmod($filename,$perms);
-      }
-      else // Couldn't create temp file, error
-      {
-        throw new \fException('File',\fException::ERROR,'Unable to create temporary file,Can\'t prepend in file',$filename);
-      }
-    }
-    elseif(!file_exists($content)) // file doesn't exist, so we just write the stuff
-    {
-      self::save($filename,$content);
-    }
-    else // error
-    {
-      throw new \fException('File',\fException::ERROR,'Can\'t prepend in file',$filename);
-    }
+    $file = new \File($filename);
+    $file->prepend($content)->close();
   }
 }
 ?>

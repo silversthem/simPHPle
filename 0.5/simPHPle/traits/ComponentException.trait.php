@@ -23,6 +23,7 @@ trait ComponentException
       unset($context[0]);
       unset($context[1]);
     }
+    if(count($context) === 0) $context = NULL;
     throw new \fException($this->name,$errtype,$str,$context,$this);
   }
 }

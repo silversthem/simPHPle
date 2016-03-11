@@ -10,15 +10,15 @@ namespace handlers\log;
 
 class Log implements \log\IWriter
 {
-  protected $filename; // log file
+  protected $file; // log file
   public function __construct() // creates a log
   {
-    $this->filename = BASE_FOLDER.LOG_DIR.'/'.Journal::getDailyLog().'.log';
+    $this->file = new \File(BASE_FOLDER.LOG_DIR.'/'.Journal::getDailyLog().'.log');
     $this->write('-- Execution started --');
   }
   public function write($line) // writes stuff in log
   {
-    \File::append($this->filename,$line."\n");
+    $this->file->prepend($line."\n");
   }
   public function error($type,$str,$file,$line,$context) // either write the error in log or shows it
   {
