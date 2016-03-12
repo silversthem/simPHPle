@@ -92,7 +92,7 @@ class File
   }
   protected function ref_write($content) // writes in the file from cursor
   {
-    if(fwrite($this->file,$context) === false) // trying to write
+    if(fwrite($this->file,$content) === false) // trying to write
     {
       $this->exception('Tried to write in file, but failed',$this->filename);
     }

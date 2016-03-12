@@ -13,40 +13,60 @@ class Log implements \log\IWriter
   protected $file; // log file
   public function __construct() // creates a log
   {
-    $this->file = new \File(BASE_FOLDER.LOG_DIR.'/'.Journal::getDailyLog().'.log');
-    $this->write('-- Execution started --');
-  }
-  public function write($line) // writes stuff in log
-  {
-    $this->file->prepend($line."\n");
+    if(MODE == 'DEVELOPMENT')
+    {
+      // Creating backtrace file, needs router
+    }
+    else
+    {
+      $this->file = new \File(BASE_FOLDER.LOG_DIR.'/'.Journal::getDailyLog().'.log');
+      $this->file->append('-- Execution started --');
+    }
+
   }
   public function error($type,$str,$file,$line,$context) // either write the error in log or shows it
   {
-
-  }
-  public function framework_error($component,$type,$str) // stores a framework error
-  {
-
-  }
-  public function library_error($lib,$type,$str) // stores an error emitted by a library
-  {
-
+    if(MODE == 'DEVELOPMENT')
+    {
+      // ... Generation
+    }
+    else
+    {
+      $this->file->append('[Error '.$type.' in '.$file.' (line '.$line.')] : '.$str.' '.print_r($context));
+    }
   }
   public function log($str) // writes text in the log
   {
-
+    $this->file->append('Entry in log : '.$str);
   }
   public function backtrace($type,$str) // stores backtrace
   {
-
+    if(MODE == 'DEVELOPMENT')
+    {
+      // Need router to backtrace -> storing backtrace in url_backtrace.json
+    }
   }
   public function catch_exception($exception) // handles exceptions
   {
-
+    if(MODE == 'DEVELOPMENT')
+    {
+      // ... Generation
+    }
+    else
+    {
+      $this->file->append('Exception : '.$exception);
+    }
   }
   public function catch_framework_exception($exception) // handles framework exceptions
   {
-
+    if(MODE == 'DEVELOPMENT')
+    {
+      // ... Generation
+    }
+    else
+    {
+      $this->file->append('Framework exception : '.$exception);
+    }
   }
 }
 ?>

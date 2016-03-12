@@ -9,8 +9,6 @@ namespace log;
 interface IWriter
 {
   public function error($type,$str,$file,$line,$context); // function called when an error is emitted
-  public function framework_error($component,$type,$str); // framework error
-  public function library_error($lib,$type,$str); // library error
   public function log($str); // handles a text
   /* Development */
   public function backtrace($type,$str); // handles backtraces

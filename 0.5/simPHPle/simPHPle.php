@@ -23,7 +23,12 @@ loaders\Loader::load_trait('Collection');
 
 /* Interface used by classes having aliases */
 
+loaders\Loader::load_interface('ILauncher');
+loaders\Loader::load_interface('IHandler');
+loaders\Loader::load_interface('ILoader');
 loaders\Loader::load_interface('log\IWriter');
+loaders\Loader::load_interface('collections\ICollection');
+loaders\Loader::load_interface('collections\ILaunched');
 
 /* Aliases and system classes dependencies */
 
@@ -34,6 +39,9 @@ Journal::dependencies();
 /* Creating the journal : Your debugging/error handling tool */
 
 $Journal = new Journal(); // initializing the journal
+
+set_error_handler(array('Journal','register_error'));
+set_exception_handler(array('Journal','uncaught_exception'));
 
 /* Good luck, have fun
   - Created by Silversthem : https://github.com/silversthem

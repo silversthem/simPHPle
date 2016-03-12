@@ -6,6 +6,10 @@
 
 /* Launchers */
 
+class_alias('launchers\Launcher','Launcher');
+class_alias('launchers\collections\Collection','collections\Collection');
+class_alias('launchers\collections\ObjectCollection','collections\ObjectCollection');
+
 /* Handlers */
 
 /* Log and error handling */

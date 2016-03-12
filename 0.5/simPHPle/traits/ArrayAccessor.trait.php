@@ -26,7 +26,7 @@ trait ArrayAccessor
     if(!$this->array_modifiable)
     {
       throw new \fException('ArrayAccessor trait',\fException::ERROR,'tried to modify an non modifiable array',
-        array('array' => $this->var_array,'class' => __CLASS__,'context' => $errorContext));
+        array('array' => $this->var_array,'class' => __CLASS__,'context' => $errorContext),$this);
       return false;
     }
     else
@@ -65,7 +65,7 @@ trait ArrayAccessor
     if(!$this->offsetExists($key))
     {
       throw new \fException('ArrayAccessor trait',\fException::ERROR,'tried to call inexistant key in array',
-        array('key' => $key,'array' => $this->var_array,'class' => __CLASS__));
+        array('key' => $key,'array' => $this->var_array,'class' => __CLASS__),$this);
     }
     return $this->var_array[$key];
   }
@@ -84,7 +84,7 @@ trait ArrayAccessor
     {
       if($this->offsetExists($key)) unset($this->var_array[$key]);
       else throw new \fException('ArrayAccessor trait',\fException::ERROR,'tried to delete inexistant key in array',
-        array('key' => $key,'array' => $this->var_array,'class' => __CLASS__));;
+        array('key' => $key,'array' => $this->var_array,'class' => __CLASS__),$this);
     }
   }
 }

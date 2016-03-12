@@ -189,6 +189,10 @@ trait Collection
   {
     return array_key_exists($key,$this->collection);
   }
+  public function pile_exists($pile) // if pile exists
+  {
+    return ($this->exists($key) && is_array($this->collection[$key]));
+  }
   public function is_writable($key,$adding = true) // can we write in key ? let's find out
   {
     if($this->addable) // if we can add things to the collection
