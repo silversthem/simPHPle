@@ -6,12 +6,18 @@
 
 /* Launchers */
 
+class_alias('launchers\App','App');
 class_alias('launchers\Launcher','Launcher');
+/* Collections */
 class_alias('launchers\collections\Collection','collections\Collection');
 class_alias('launchers\collections\ObjectCollection','collections\ObjectCollection');
 
 /* Handlers */
 
+/* Routing */
+class_alias('handlers\routing\Router','Router');
+class_alias('handlers\routing\Router','Route');
+class_alias('handlers\routing\Pattern','routing\Pattern');
 /* Log and error handling */
 class_alias('handlers\log\Journal','Journal');
 class_alias('handlers\log\Log','Log');

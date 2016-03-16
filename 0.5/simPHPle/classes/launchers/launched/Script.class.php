@@ -14,11 +14,7 @@ class Script implements \collections\ILaunched
   {
     $this->file = $file;
   }
-  public function name() // name of launched
-  {
-    return 'Script';
-  }
-  public function init(&$collection) // initializes the script
+  public function init(&$context) // initializes the script
   {
     if(!file_exists($this->file))
     {

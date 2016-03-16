@@ -7,22 +7,39 @@
 
 namespace launchers\collections;
 
-class ObjectCollection implements \collections\ICollection
+class ObjectCollection extends \collections\Collection
 {
-  protected $object; // the object in the collection
+  use \ComponentException;
+
+  protected $objects; // the object in the collection
   protected $pile; // the methods applied to the object
 
-  public function __construct($object) // creates an object collection
+  public function __construct(/* Objects */) // creates an object collection
   {
-
+    $this->exception_set_up('ObjectCollection');
   }
-  public function name() // Returns object's name to store in bigger collection if needed
+  public function add_object(&$object) // Adds an object
   {
-    return get_class($object);
+    $this->objects[get_class($object)] = $object;
   }
-  public function exec() // executes the pile on the object
+  protected function launch($element,$arguments) // Launches methods + all generic types
   {
-
+    if($element instanceof \launchers\launched\Method)
+    {
+      if(array_key_exists($element->name(),$this->objects))
+      {
+        $element->init($arguments);
+        return $element->launch($this->objects[$element->name()]);
+      }
+      else
+      {
+        $this->exception('Trying to call method on non object',\fException::ERROR,$element->name(),$element->method());
+      }
+    }
+    else
+    {
+      return parent::launch($element,$arguments);
+    }
   }
 }
 ?>

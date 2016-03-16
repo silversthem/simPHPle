@@ -16,13 +16,27 @@ class Function implements \collections\ILaunched
     $this->func = $func;
     $this->arguments = $arguments;
   }
-  public function name() // returns name
+  /* Arguments related methods */
+  protected function argument_unshift($arg) // Adds argument to the pile
   {
-    return 'Function';
+    if(!is_null($arg))
+    {
+      array_unshift($this->arguments,$arg);
+    }
   }
-  public function init(&$collection) // initializes the script
+  protected function arguments_add($args) // Adds argument to the pile
   {
-
+    if(!is_array($args))
+    {
+      $args = array($args);
+    }
+    $this->arguments = array_merge($this->arguments,$args);
+  }
+  /* Launched methods */
+  public function init(&$context) // initializes the script
+  {
+    // Replace GET and POST requests by their values
+    $this->argument_unshift($context);
   }
   public function launch(&$context) // launches the function
   {

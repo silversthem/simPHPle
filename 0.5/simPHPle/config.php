@@ -31,7 +31,7 @@ define('USER_CLASS_EXT','.class.php'); // all class files are : *.class.php
 define('USER_TRAIT_EXT','.trait.php'); // all trait files are : *.trait.php
 define('USER_INTERFACE_EXT','.interface.php'); // all interface files are : *.class.php
 define('USER_EVENT_EXT','.event.php'); // all event files are : *.event.php
-define('USER_CONTROLLER_EXT','.php'); // all controller files are : *.php
+define('USER_CONTROLLER_EXT','.controller.php'); // all controller files are : *.php
 define('USER_TEMPLATE_EXT','.tpl'); // user templates files are *.tpl
 
 /* System constants ; they are just for code readability, /!\ be very careful (please) /!\ */

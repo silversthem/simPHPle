@@ -8,6 +8,6 @@ namespace collections;
 
 interface ICollection extends \ILauncher
 {
-  public function name(); // Collection's name
+  
 }
 ?>

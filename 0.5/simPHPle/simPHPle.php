@@ -23,10 +23,13 @@ loaders\Loader::load_trait('Collection');
 
 /* Interface used by classes having aliases */
 
+/* Basics */
 loaders\Loader::load_interface('ILauncher');
 loaders\Loader::load_interface('IHandler');
 loaders\Loader::load_interface('ILoader');
+/* Logging */
 loaders\Loader::load_interface('log\IWriter');
+/* Collections related */
 loaders\Loader::load_interface('collections\ICollection');
 loaders\Loader::load_interface('collections\ILaunched');
 
