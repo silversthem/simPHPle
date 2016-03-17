@@ -1,7 +1,7 @@
 <?php
 /* Route example */
 
-$route = new Route('Index'); // Creating a route with a controller, the model will be extracted by the getModel method
+$route = new Route('example','Index'); // Creating a route with a controller, the model will be extracted by the getModel method
 
 $route->add('index.html',function(){ // When the url is index.html -> call Closure
   echo 'Hello world';

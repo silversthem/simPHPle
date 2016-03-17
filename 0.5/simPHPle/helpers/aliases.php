@@ -11,6 +11,7 @@ class_alias('launchers\Launcher','Launcher');
 /* Collections */
 class_alias('launchers\collections\Collection','collections\Collection');
 class_alias('launchers\collections\ObjectCollection','collections\ObjectCollection');
+class_alias('launchers\collections\Controller','collections\Controller');
 
 /* Handlers */
 
