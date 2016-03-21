@@ -15,7 +15,7 @@ class Controller implements \ILoader
   public function __construct($module,$controller = NULL) // Creates a controller pile
   {
     $this->modfile = USER_MODULES_FOLDER.'/'.$module;
-    $this->controller = new collections\Controller();
+    $this->controller = new \collections\Controller();
     if(!is_null($controller)) // Defined controller
     {
       if(is_string($controller)) // Is a class from module
@@ -27,6 +27,13 @@ class Controller implements \ILoader
   public function add_class($class) // Adds classes to the pile of things to be loaded
   {
     $this->to_load_classes[] = new \loaders\Object($class);
+  }
+  public function add_pile($pile) // Adds a pile to the pile
+  {
+    foreach($pile as $element)
+    {
+      $this->add_to_pile($element);
+    }
   }
   public function add_to_pile($element) // Adds an element to the pile
   {

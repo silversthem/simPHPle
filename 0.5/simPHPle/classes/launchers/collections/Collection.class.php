@@ -26,6 +26,10 @@ class Collection implements \collections\ICollection
       $element->init($argument);
       return $element->launch(NULL);
     }
+    elseif($element instanceof \Closure) // An anonymous function, quick to debug
+    {
+      return $element($argument);
+    }
     else // A pause, or a weird unknown thing
     {
       return NULL;

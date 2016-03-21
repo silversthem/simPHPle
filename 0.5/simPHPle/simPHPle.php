@@ -35,6 +35,8 @@ loaders\Loader::load_interface('collections\ILaunched');
 
 /* Aliases and system classes dependencies */
 
+launchers\App::dependencies();
+
 include 'helpers/aliases.php'; // Class aliases
 
 Journal::dependencies();

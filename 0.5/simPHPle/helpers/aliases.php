@@ -17,7 +17,7 @@ class_alias('launchers\collections\Controller','collections\Controller');
 
 /* Routing */
 class_alias('handlers\routing\Router','Router');
-class_alias('handlers\routing\Router','Route');
+class_alias('handlers\routing\Route','Route');
 class_alias('handlers\routing\Pattern','routing\Pattern');
 /* Log and error handling */
 class_alias('handlers\log\Journal','Journal');
@@ -30,4 +30,5 @@ class_alias('handlers\files\Json','Json');
 /* Loaders */
 
 class_alias('loaders\Loader','Loader');
+class_alias('loaders\Controller','Loader\Controller');
 ?>

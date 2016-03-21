@@ -37,7 +37,7 @@ function Event($method,/*, $arguments  */) // A controller method that'll return
 
 function Permission($file = 'permissions.php') // Loads a permission file
 {
-  
+
 }
 
 function Nothing() // Makes a pause between two elements in a pile
@@ -48,5 +48,10 @@ function Nothing() // Makes a pause between two elements in a pile
 function Kill() // Kills (stops) the pile
 {
   return 'KILL';
+}
+
+function Jump() // TODO : "Jumps" the next element in pile (still giving it the argument but not changing argument for its return value)
+{ // Useful to debug usually
+
 }
 ?>
