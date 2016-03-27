@@ -14,7 +14,7 @@ class Controller implements \ILoader
 
   public function __construct($module,$controller = NULL) // Creates a controller pile
   {
-    $this->modfile = USER_MODULES_FOLDER.'/'.$module;
+    $this->modfile = (!class_exists($controller)) ? USER_MODULES_FOLDER.'/'.$module : NULL;
     $this->controller = new \collections\Controller();
     if(!is_null($controller)) // Defined controller
     {

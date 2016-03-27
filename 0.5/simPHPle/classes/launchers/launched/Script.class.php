@@ -4,7 +4,7 @@
   Executes a php script
 */
 
-namespace \launchers\launched;
+namespace launchers\launched;
 
 class Script implements \collections\ILaunched
 {

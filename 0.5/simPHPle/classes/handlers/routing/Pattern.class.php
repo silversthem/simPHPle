@@ -15,6 +15,7 @@ class Pattern
   public function __construct($pattern,$pile = array()) // Creates a pattern
   {
     $this->pattern = $pattern;
+    // TODO : Options (regex) on parameters
     $this->pile = $pile;
   }
   public function get_pile() // Returns pile

@@ -19,6 +19,7 @@ class App implements \ILauncher
     \loaders\Loader::load_interface('routing/IRoute');
     \loaders\Loader::load_interface('controllers/IQuery');
     \loaders\Loader::load_interface('controllers/IEvent');
+    \loaders\Loader::load_helper('controllers');
   }
   public function load_route($module,$file = 'route.php') // Loads route in a file
   {

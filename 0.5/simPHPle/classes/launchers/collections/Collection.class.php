@@ -30,6 +30,10 @@ class Collection implements \collections\ICollection
     {
       return $element($argument);
     }
+    elseif($element instanceof \IHandler) // A handler
+    {
+      return $element->get();
+    }
     else // A pause, or a weird unknown thing
     {
       return NULL;
@@ -44,7 +48,12 @@ class Collection implements \collections\ICollection
       {
         break;
       }
-      $argument = $this->launch($element,$argument);
+      // TODO : Handling jumps
+      $temp = $this->launch($element,$argument);
+      if(!is_null($temp))
+      {
+        $argument = $temp;
+      }
     }
     return $argument;
   }

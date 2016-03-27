@@ -12,25 +12,31 @@ define('EVENT_ELSE',-1); // Same, but with events
 
 function Action($method/*, $arguments */) // An action
 {
-
+  $args = array();
+  if(func_num_args() > 1)
+  {
+    $args = func_get_args();
+    unset($args[0]);
+  }
+  return new \launched\Method($method,'Controller',$args);
 }
 
-function Query($class,$method/*, $arguments */) // A query
+function Query(/* $arguments */) // A query
 {
 
 }
 
-function Get($data) // Tells the action/query to use $_GET['data'] if exists, else -> unhandled exception
+function Get($data) // Tells the action/query to use $_GET['data'] if exists
+{
+  return new GET($data);
+}
+
+function Post($data) // Tells the action/query to use $_POST['data'] if exists
 {
 
 }
 
-function Post($data) // Tells the action/query to use $_POST['data'] if exists, else -> unhandled exception
-{
-
-}
-
-function Event($method,/*, $arguments  */) // A controller method that'll return the event object needed to assert the event
+function Event($method/*, $arguments  */) // A controller method that'll return the event object needed to assert the event
 {
 
 }

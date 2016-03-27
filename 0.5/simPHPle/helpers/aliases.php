@@ -12,6 +12,10 @@ class_alias('launchers\Launcher','Launcher');
 class_alias('launchers\collections\Collection','collections\Collection');
 class_alias('launchers\collections\ObjectCollection','collections\ObjectCollection');
 class_alias('launchers\collections\Controller','collections\Controller');
+/* Pile elements */
+class_alias('launchers\launched\Closure','launched\Closure');
+class_alias('launchers\launched\Method','launched\Method');
+class_alias('launchers\launched\Script','launched\Script');
 
 /* Handlers */
 
@@ -26,6 +30,8 @@ class_alias('handlers\log\fException','fException');
 /* Files */
 class_alias('handlers\files\File','File');
 class_alias('handlers\files\Json','Json');
+/* Requests */
+class_alias('handlers\requests\GET','GET');
 
 /* Loaders */
 

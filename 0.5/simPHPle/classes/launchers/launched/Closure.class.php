@@ -4,9 +4,9 @@
   Handles a function in a collection
 */
 
-namespace \launchers\launched;
+namespace launchers\launched;
 
-class Function implements \collections\ILaunched
+class Closure implements \collections\ILaunched
 {
   protected $func; // function
   protected $arguments; // arguments

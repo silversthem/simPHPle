@@ -4,9 +4,9 @@
   Used to executes methods on objects in ObjectCollection
 */
 
-namespace \launchers\launched;
+namespace launchers\launched;
 
-class Method extends \launchers\launched\Function
+class Method extends \launchers\launched\Closure
 {
   protected $method; // Method
   protected $class; // Class on which to apply the method
