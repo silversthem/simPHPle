@@ -10,6 +10,7 @@
   Note : Don't use this when a database is clearly a better option, that's nasty
   Other note : This is a very inefficient way of handling datas that's not configuration or result of any sort
   Other Other note : There is no way to secure the data stored, that's not what this trait is for
+  @TODO : Use in templates, for Memoization in collections & for events
 */
 
 trait Collection

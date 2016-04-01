@@ -1,15 +1,15 @@
 <?php
 /*
   Class
-  Used to make get requests
+  Used to make Post request
   Can also be used statically
 */
 
 namespace handlers\requests;
 
-class GET extends \handlers\requests\Request implements \IHandler
+class POST extends \handlers\requests\Request implements \IHandler
 {
-  public function __construct($name,$default = NULL,$escape = true) // Creates a get request
+  public function __construct($name,$default = NULL,$escape = true) // Creates a post request
   {
     $this->set_up($name,$default,$escape);
   }

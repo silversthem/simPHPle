@@ -15,6 +15,17 @@ class Collection implements \collections\ICollection
   {
 
   }
+  public function set_pile($pile) // Sets collection pile
+  {
+    $this->pile = $pile;
+  }
+  public function add_pile($pile) // Adds a pile
+  {
+    foreach($pile as $element)
+    {
+      $this->add($element);
+    }
+  }
   public function add($element) // adds an element to the pile
   {
     $this->pile[] = $element;
@@ -30,18 +41,16 @@ class Collection implements \collections\ICollection
     {
       return $element($argument);
     }
-    elseif($element instanceof \IHandler) // A handler
+    elseif(\Launcher::can_boot($element)) // A handler
     {
-      return $element->get();
+      return \Launcher::boot($element);
     }
-    else // A pause, or a weird unknown thing
-    {
-      return NULL;
-    }
+    return NULL; // Default
   }
   public function exec() // Executes the pile
   {
     $argument = NULL;
+    // @TODO : Support Memoization when $element is an array -> Create a big argument for each array element return
     foreach($this->pile as $element)
     {
       if(is_string($element) && $element == 'KILL') // killing the pile

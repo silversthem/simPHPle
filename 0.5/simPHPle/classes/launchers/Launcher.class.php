@@ -8,6 +8,10 @@ namespace launchers;
 
 class Launcher
 {
+  public static function can_boot($object) // If the object can be booted
+  {
+    return ($object instanceof \ILoader) || ($object instanceof \IHandler) || ($object instanceof \ILauncher);
+  }
   public static function boot($object) // "Boots" an object -> executes an action depending on type
   {
     if($object instanceof \ILoader) // Loader

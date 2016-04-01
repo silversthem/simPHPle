@@ -17,13 +17,21 @@ class App implements \ILauncher
   public static function dependencies() // Loads dependencies
   {
     \loaders\Loader::load_interface('routing/IRoute');
-    \loaders\Loader::load_interface('controllers/IQuery');
-    \loaders\Loader::load_interface('controllers/IEvent');
+    \loaders\Loader::load_interface('events/IQuery');
+    \loaders\Loader::load_interface('events/IEvent');
     \loaders\Loader::load_helper('controllers');
   }
   public function load_route($module,$file = 'route.php') // Loads route in a file
   {
-
+    if(file_exists($route_file = USER_MODULES_FOLDER.'/'.$module.'/'.$file))
+    {
+      // @TODO : use loader method for backtrace
+      $this->router->add_route(include $route_file);
+    }
+    else
+    {
+      throw new \fException('App component',\fException::FATAL,'Couldn\'t load route file',$file,$this);
+    }
   }
   public function exec() // Runs the app
   {

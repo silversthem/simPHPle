@@ -7,6 +7,7 @@
 /* Launchers */
 
 class_alias('launchers\App','App');
+class_alias('launchers\Controller','Controller');
 class_alias('launchers\Launcher','Launcher');
 /* Collections */
 class_alias('launchers\collections\Collection','collections\Collection');
@@ -32,6 +33,7 @@ class_alias('handlers\files\File','File');
 class_alias('handlers\files\Json','Json');
 /* Requests */
 class_alias('handlers\requests\GET','GET');
+/* Events */
 
 /* Loaders */
 

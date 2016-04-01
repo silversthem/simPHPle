@@ -14,13 +14,12 @@ class Controller implements \ILoader
 
   public function __construct($module,$controller = NULL) // Creates a controller pile
   {
-    $this->modfile = (!class_exists($controller)) ? USER_MODULES_FOLDER.'/'.$module : NULL;
     $this->controller = new \collections\Controller();
     if(!is_null($controller)) // Defined controller
     {
       if(is_string($controller)) // Is a class from module
       {
-        $this->to_load_classes['Controller'] = new \loaders\Object($controller,$this->modfile);
+        $this->to_load_classes['Controller'] = new \loaders\Object($controller,USER_MODULES_FOLDER.'/'.$module.'/'.$controller.USER_CONTROLLER_EXT);
       }
     }
   }

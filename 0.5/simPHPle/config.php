@@ -15,7 +15,7 @@ define('MODE','DEVELOPMENT'); // application mode : PRODUCTION or DEVELOPMENT
 
 /* Log */
 
-define('LOG',true); // whether to store log in production
+define('LOG',false); // whether to store log in production [Desactived temporarily because annoying]
 define('LOG_DIR','storage/log'); // where to store log, backtrace and all...
 
 /* App folder */

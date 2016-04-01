@@ -61,6 +61,10 @@ class Journal
     }
   }
   /* Backtracing */
+  public static function write($content) // Writes stuff in the writer used
+  {
+    self::$writer->log($content);
+  }
   public static function profile($type,$element) // handles element to be profiled, by type
   {
     self::$writer->backtrace($type,$element);
