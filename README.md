@@ -1,10 +1,10 @@
 # What is simPHPle ?
 
 simPHPle is a php framework built on 4 core principles (*tetrapharmakon* as a pretentious person would say, such as myself) :
-1. Your app code should be written only once (Non redunancy principle)
-2. The flow of your code should reflect **perfectly** the way your app works, without any ugly weird bits hidden in the dark, everything is visible and transparent.
-3. Short, clean files in neatly arranged directories. No exception.
-4. The guy that has to maintain your code shouldn't try to hang himself with an ethernet cable ( = your code should be elegant, beautiful, smart, easy to read and **very** easy to maintain and change)
+ 1. Your app code should be written only once (Non redunancy principle).
+ 2. The flow of your code should reflect **perfectly** the way your app works, without any ugly weird bits hidden in the dark, everything is visible and transparent.
+ 3. Short, clean files in neatly arranged directories. No exception.
+ 4. The guy that has to maintain your code shouldn't try to hang himself with an ethernet cable ( = your code should be elegant, beautiful, smart, easy to read and **very** easy to maintain and change)
 
 In short, the idea is you can go from describing your app on a whiteboard to coding it directly, without logic changes,
 and that logic should appear in your code.
