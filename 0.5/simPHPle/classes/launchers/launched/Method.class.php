@@ -25,10 +25,10 @@ class Method extends \launchers\launched\Closure
   {
     return $this->method;
   }
-  public function init(&$context) // initializes the method
+  public function init(&$context,$memoize = false) // initializes the method
   {
     // Check for class existence
-    parent::init($context);
+    parent::init($context,$memoize);
   }
   public function launch(&$context) // launches a method
   {

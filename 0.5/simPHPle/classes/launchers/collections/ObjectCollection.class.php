@@ -22,13 +22,13 @@ class ObjectCollection extends \collections\Collection
   {
     $this->objects[get_class($object)] = $object;
   }
-  protected function launch($element,$arguments) // Launches methods + all generic types
+  protected function launch($element,$arguments,$memoized) // Launches methods + all generic types
   {
     if($element instanceof \launchers\launched\Method)
     {
       if(array_key_exists($element->name(),$this->objects))
       {
-        $element->init($arguments);
+        $element->init($arguments,$memoized);
         return $element->launch($this->objects[$element->name()]);
       }
       else
@@ -38,7 +38,7 @@ class ObjectCollection extends \collections\Collection
     }
     else
     {
-      return parent::launch($element,$arguments);
+      return parent::launch($element,$arguments,$memoized);
     }
   }
 }

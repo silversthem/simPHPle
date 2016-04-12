@@ -30,6 +30,12 @@ class Router implements \IHandler
   {
     $this->routes[] = $route;
   }
+  public function add_a_route() // Adds an anonymous route quickly
+  {
+    $r = new \Route();
+    call_user_func_array(array($r,'add'),func_get_args());
+    $this->add_route($r);
+  }
   public function get() // Gets the right controller
   {
     foreach($this->routes as $route)

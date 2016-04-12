@@ -11,7 +11,7 @@ class Controller extends \collections\ObjectCollection
 {
   public function __construct($controller = NULL/*, Other objects  */) // Creates a controller pile
   {
-    $this->set_controller(($controller));
+    $this->set_controller($controller);
     if(func_num_args() > 2)
     {
       $objects = func_get_args();
@@ -30,7 +30,7 @@ class Controller extends \collections\ObjectCollection
       $this->objects['Controller'] = $controller; // The controller has a special alias
     }
   }
-  public function launch($element,$argument) // Launches an element
+  public function launch($element,$argument,$memoized) // Launches an element
   {
     if($element instanceof \controllers\IEvent) // An event
     {
@@ -42,7 +42,7 @@ class Controller extends \collections\ObjectCollection
     }
     else
     {
-      return parent::launch($element,$argument);
+      return parent::launch($element,$argument,$memoized);
     }
   }
 }

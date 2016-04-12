@@ -11,11 +11,12 @@ class Pattern
 {
   protected $pattern; // The pattern string
   protected $pile; // Pile associated with pattern
+  protected $get_patterns; // @TODO : Regular expressions associated with the parameters in the url
+  protected $options; // @TODO : Allows options at the end of the url like ?opt1=val&opt2=val2 -> Created in $_GET['options']
 
   public function __construct($pattern,$pile = array()) // Creates a pattern
   {
     $this->pattern = $pattern;
-    // TODO : Options (regex) on parameters
     $this->pile = $pile;
   }
   public function get_pile() // Returns pile
@@ -28,7 +29,32 @@ class Pattern
     !is_null(\Launcher::valid_in($this->pattern,array('\routing\Pattern','pattern_valid'),$url)) : // Testing all patterns
     self::pattern_valid($this->pattern,$url); // Else, testing the only one
   }
-  public static function pattern_valid($pattern,$url,$createGet = true) // Checks pattern validy, and creates get if it is and $createGet is set to true
+  public static function pattern_make($pattern,$url,$gets = array()) // If the pattern is valid, creates get associated with it and returns true
+  {
+    if(preg_match_all('#^'.$pattern.'$#isU',$url,$gets_values,PREG_SET_ORDER)) // Testing if pattern matches
+    {
+      // TODO : Add backtrace and exception
+      if(count($gets) > 0) // We're creating gets
+      {
+        $gets_values[0] = array_map(function($char){return ltrim($char,'/');},$gets_values[0]);
+        unset($gets_values[0][0]);
+        foreach($gets_values[0] as $key => $val)
+        {
+          if($val != '')
+          {
+            $_GET[$gets[$key-1]] = $val;
+          }
+        }
+        return true;
+      }
+      else
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+  public static function pattern_valid($pattern,$url,$createGet = true) // Checks pattern validy, and creates $_GET if it is and $createGet is set to true
   {
     $test_pattern = preg_quote($pattern); // The regex that'll be tested
     $gets = array(); // The get variables, if $create_get is true
@@ -40,7 +66,6 @@ class Pattern
         {
           $name = str_replace('\?','',$match[1]);
           $test_pattern = str_replace($match[0],'(.*)',$test_pattern); // Optional parameter
-          $test_pattern = str_replace('/(.*)','/?(.*)',$test_pattern); // Making / optional before an optional parameter
           $gets[] = $name;
         }
         else
@@ -50,32 +75,30 @@ class Pattern
         }
       }
     }
-    if(preg_match_all('#^'.$test_pattern.'$#isU',$url,$gets_values)) // Testing if pattern matches
+    $possibilities = explode('(.*)',$test_pattern); // possibilities with optional parameters
+    if(count($possibilities) > 1) // Testing all possibilities
     {
-      // TODO : Add backtrace and exception
-      if($createGet) // We're creating gets
+      $possibility = '';
+      $temp = array();
+      foreach($possibilities as $part)
       {
-        $gets_values[1] = array_map(function($char){return ltrim($char,'/');},$gets_values[1]);
-        if(count($gets) != 0 && count($gets_values[1]) != count($gets)) // Not same number of key and values
-        {
-          // Exception
-          return false;
-        }
-        foreach($gets_values[1] as $key => $value) // Creating the $_GET variables from url
-        {
-          if($value != "") // Not an unfilled optional parameter
-          {
-            $_GET[$gets[$key]] = urldecode($value);
-          }
-        }
-        return true;
+        $possibility .= $part;
+        $temp[] = preg_replace('#/$#','/?',$possibility);
+        $possibility .= '(.+)';
       }
-      else
+      $possibilities = array_reverse($temp);
+      foreach($possibilities as $p)
       {
-        return true;
+        if(self::pattern_make($p,$url,$gets))
+        {
+          return true;
+        }
       }
     }
-    return false;
+    else // One Possibility
+    {
+      return self::pattern_make($test_pattern,$url,$gets);
+    }
   }
 }
 ?>

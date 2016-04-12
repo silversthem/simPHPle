@@ -30,38 +30,55 @@ class Collection implements \collections\ICollection
   {
     $this->pile[] = $element;
   }
-  protected function launch($element,$argument) // launches an element
+  protected function launch($element,$argument,$memoized) // launches an element
   {
-    if($element instanceof \collections\ILaunched)
+    if(is_array($element)) // An array, each array element must be dissected
     {
-      $element->init($argument);
+      $mem = array(); // Memoization
+      foreach($element as $sub) // Each element has to be executed, $argument is now an array
+      {
+        $temp = $this->launch($sub,$argument,false);
+        if(!is_null($temp))
+        {
+          $mem[] = $temp;
+        }
+      }
+      return $mem;
+    }
+    elseif($element instanceof \collections\ILaunched)
+    {
+      $element->init($argument,$memoized);
       return $element->launch(NULL);
     }
-    elseif($element instanceof \Closure) // An anonymous function, quick to debug
+    elseif($element instanceof \Closure || is_callable($element)) // A function
     {
-      return $element($argument);
+      return ($memoized) ? call_user_func_array($element,$argument) : $element($argument);
     }
     elseif(\Launcher::can_boot($element)) // A handler
     {
       return \Launcher::boot($element);
     }
-    return NULL; // Default
+    return $element; // Default
   }
   public function exec() // Executes the pile
   {
     $argument = NULL;
-    // @TODO : Support Memoization when $element is an array -> Create a big argument for each array element return
+    $memoized = false;
     foreach($this->pile as $element)
     {
       if(is_string($element) && $element == 'KILL') // killing the pile
       {
         break;
       }
-      // TODO : Handling jumps
-      $temp = $this->launch($element,$argument);
-      if(!is_null($temp))
+      else
       {
-        $argument = $temp;
+        // TODO : Handling jumps
+        $temp = $this->launch($element,$argument,$memoized);
+        $memoized = is_array($element);
+        if(!is_null($temp) || !empty($temp)) // If temp isn't null
+        {
+          $argument = $temp;
+        }
       }
     }
     return $argument;

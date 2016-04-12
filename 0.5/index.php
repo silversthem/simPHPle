@@ -5,9 +5,18 @@
 
 include 'simPHPle/simPHPle.php';
 
-/* Final test (skeleton of what could be a real life application, not yet finished) */
+/* Routing test ! */
 
 $App = new App();
-$App->load_route('example'); // Loads route in the example module (route.php file by default)
+
+$App->router->add_a_route('hello/{name?}/{surname?}', // Saying hello to someone
+  array(Get('name'),Get('surname')), // Getting the name
+  function($name = 'John',$surname = 'Doe') { // If no name given, calling the person John Doe
+    echo "Hello <b>$name $surname</b> !<br/>";
+  },
+  'Potatoes', // Getting what the person likes
+  function($like) {
+    echo "You like $like";
+});
 $App->exec();
 ?>

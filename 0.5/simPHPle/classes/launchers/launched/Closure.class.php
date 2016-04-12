@@ -33,10 +33,16 @@ class Closure implements \collections\ILaunched
     $this->arguments = array_merge($this->arguments,$args);
   }
   /* Launched methods */
-  public function init(&$context) // initializes the script
+  public function init(&$context,$memoize = false) // initializes the script
   {
-    // Replace GET and POST requests by their values
-    $this->argument_unshift($context);
+    if($memoize) // Context is an array of memoized values => multiple arguments
+    {
+      $this->arguments_add($context);
+    }
+    else // Regular argument
+    {
+      $this->argument_unshift($context);
+    }
   }
   public function launch(&$context) // launches the function
   {
